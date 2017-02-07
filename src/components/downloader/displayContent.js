@@ -4,8 +4,6 @@ var fs = require('fs');
 var youtubedl = require('youtube-dl');
 
 const os = require('os');
-var saveDir = os.homedir() + '/Downloads/';
-
 var FfmpegCommand = require('fluent-ffmpeg');
 
 // var util = require('util');
@@ -22,16 +20,6 @@ function SearchVideo(props) {
         <div>
             <p>info state: {props.loading == true ? 'loading...' : ''}</p>
             <input size="40" onChange={props.onChange} value={props.url} type="text"/>
-        </div>
-    );
-}
-
-function DownloadFolder(props) {
-    return (
-        <div>
-            <h3>Settings</h3>
-            <h4>Download path</h4>
-            <input size="40" onChange={props.onChange} value={props.downloadPath} type="text"/>
         </div>
     );
 }
@@ -62,13 +50,7 @@ function InfoVideo(props) {
 class DisplayContent extends Component {
     constructor(props) {
         super(props);
-        // localStorage.clear();
-        //todo: Check if path exists
-        let downloadPathLS = JSON.parse(localStorage.getItem('downloadPath'));
-        console.log(downloadPathLS);
-        let downloadPath = downloadPathLS != null ? downloadPathLS : saveDir;
-
-        this.state = {url: '', info: {}, stateVideo: '', loading: false, downloadPath: downloadPath};
+        this.state = {url: '', info: {}, stateVideo: '', loading: false};
         // this.state = {url: 'https://www.youtube.com/watch?v=90AiXO1pAiA', info: {}, stateVideo: ''};
         // setTimeout(() => {
         //     this.handleUrlSearch({target: {value: this.state.url}});
@@ -78,13 +60,14 @@ class DisplayContent extends Component {
         this.handleUrlSearch = this.handleUrlSearch.bind(this);
         this.handleVideoDownload = this.handleVideoDownload.bind(this);
         this.downloadMp4 = this.downloadMp4.bind(this);
-        this.downloadMp3 = this.downloadMp3.bind(this);
         this.convertToMp3 = this.convertToMp3.bind(this);
-        this.handleDownloadFolder = this.handleDownloadFolder.bind(this);
     }
 
     handleUrlSearch(e) {
+        // Get url from input
         let videoUrl = e.target.value;
+        this.setState({url: videoUrl});
+
         // Set info to loading
         let info = this.state.info;
         info.loading = true;
@@ -93,7 +76,6 @@ class DisplayContent extends Component {
         // Get video info
         console.log('Fetching video info');
         let self = this;
-        this.setState({url: videoUrl});
         youtubedl.getInfo(videoUrl, [], function (err, info) {
             if (err) throw err;
 
@@ -110,38 +92,37 @@ class DisplayContent extends Component {
 
     handleVideoDownload() {
         console.log('run download');
-        this.setState({stateVideo: 'downloading video...'});
 
         this.downloadMp4(this.convertToMp3);
-        // this.downloadMp3();
-    }
-
-    handleDownloadFolder(e) {
-        localStorage.setItem('downloadPath', JSON.stringify(e.target.value));
-        this.setState({downloadPath: e.target.value});
     }
 
     downloadMp4(onCompletion) {
         let self = this;
+        this.setState({stateVideo: 'downloading video...'});
+
+        // Video config
         let video = youtubedl(
             this.state.url,
             ['--format=18'],
             {cwd: ''}
         );
 
+        // Get video size
         video.on('info', function (info) {
             self.state.info.size = info.size;
         });
 
-        video.pipe(fs.createWriteStream(this.state.downloadPath + 'temp.mp4'));
+        // Save video
+        video.pipe(fs.createWriteStream(this.props.downloadPath + 'temp.mp4'));
 
+        // Sense end of downloading
         video.on('end', function () {
             console.log('finished downloading!');
             self.setState({stateVideo: 'finished downloading'});
             onCompletion();
         });
 
-
+        // Calculate percentage downloaded
         var pos = 0;
         video.on('data', function data(chunk) {
             pos += chunk.length;
@@ -153,29 +134,18 @@ class DisplayContent extends Component {
         });
     }
 
-    // Deprecated
-    downloadMp3(url) {
-        let self = this;
-        //Download to mp3
-        youtubedl.exec(this.state.url, ['-x', '--audio-format', 'mp3'], {}, function (err, output) {
-            if (err) throw err;
-            console.log(output.join('\n'));
-            self.setState({stateVideo: 'finished downloading'});
-        });
-
-    }
-
     convertToMp3() {
         this.setState({stateVideo: 'converting to mp3...'});
 
         // Load video file
-        let proc = FfmpegCommand(this.state.downloadPath + '/temp.mp4');
+        let proc = FfmpegCommand(this.props.downloadPath + '/temp.mp4');
 
         // Load ffmpeg binary
         if (os.platform() === 'win32') proc.setFfmpegPath(__dirname + '\\ffmpeg');
+
         // Convert to mp3
         let self = this;
-        proc.saveToFile(this.state.downloadPath + this.state.info.title + '.mp3')
+        proc.saveToFile(this.props.downloadPath + this.state.info.title + '.mp3')
             .on('end', function () {
                     self.setState({stateVideo: 'converted mp3'});
                     console.log("converted mp3");
@@ -189,7 +159,6 @@ class DisplayContent extends Component {
                 <SearchVideo onChange={this.handleUrlSearch} loading={this.state.info.loading} url={this.state.url}/>
                 <DownloadVideo onChange={this.handleVideoDownload}/>
                 <InfoVideo info={this.state.info} stateVideo={this.state.stateVideo} title="test" imagesrc=""/>
-                <DownloadFolder onChange={this.handleDownloadFolder} downloadPath={this.state.downloadPath}/>
             </div>
         );
     }

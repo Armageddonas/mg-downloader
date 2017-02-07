@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import './index.css';
-import DisplayContent from './components/downloader/displayContent'
+import MainWindow from './components/mainWindow/mainWindow'
 
 ReactDOM.render(
     <div>
         <h1>MG Downloader</h1>
-        <DisplayContent name="test"/>
+        <MainWindow/>
     </div>,
     document.getElementById('root')
 );
