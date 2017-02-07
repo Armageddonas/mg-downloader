@@ -23,7 +23,12 @@
           "deb"
         ]
       },
-      "electronPackagerConfig": {},
+      "electronPackagerConfig": {
+        "version-string":{
+          "ProductName": "MG Downloader",
+          "CompanyName": "mgd"
+        }
+      },
       "electronWinstallerConfig": {
         "name": "mg_downloader"
       },
