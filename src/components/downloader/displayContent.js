@@ -17,76 +17,46 @@ var FfmpegCommand = require('fluent-ffmpeg');
 //     log_stdout.write(util.format(d) + '\n');
 // };
 
-class SearchVideo extends Component {
-    constructor(props) {
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(e) {
-        console.log(e.target.value)
-        this.props.onChange(e.target.value);
-    }
-
-    render() {
-        return (
-            <div>
-                <p>info state: {this.props.loading == true ? 'loading...' : ''}</p>
-                <input size="40" onChange={this.handleChange} value={this.props.url} type="text"/>
-            </div>
-        );
-    }
+function SearchVideo(props) {
+    return (
+        <div>
+            <p>info state: {props.loading == true ? 'loading...' : ''}</p>
+            <input size="40" onChange={props.onChange} value={props.url} type="text"/>
+        </div>
+    );
 }
 
-class DownloadVideo extends Component {
-    constructor(props) {
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(e) {
-        console.log("Download clicked");
-        this.props.onChange();
-    }
-
-    render() {
-        return (
-            <div>
-                <input type="submit" onClick={this.handleChange} value="download"/>
-            </div>
-        );
-    }
+function DownloadVideo(props) {
+    return (
+        <div>
+            <input type="submit" onClick={props.onChange} value="download"/>
+        </div>
+    );
 }
 
-class InfoVideo extends Component {
-    constructor(props) {
-        super(props);
-    }
+function InfoVideo(props) {
+    if (props.info.title === undefined || props.info.title === '')
+        return <h2>Info</h2>;
 
-    render() {
-        if (this.props.info.title === undefined || this.props.info.title === '')
-            return <h2>Info</h2>;
-
-        return (
-            <div>
-                <h2>Info</h2>
-                <h3>{this.props.info.title}</h3>
-                <img src={this.props.info.thumbnail} alt="no image" width="120" height="120"/>
-                <p>downloading state: {this.props.stateVideo}</p>
-            </div>
-        );
-    }
+    return (
+        <div>
+            <h2>Info</h2>
+            <h3>{props.info.title}</h3>
+            <img src={props.info.thumbnail} alt="no image" width="120" height="120"/>
+            <p>downloading state: {props.stateVideo}</p>
+        </div>
+    );
 }
 
 
 class DisplayContent extends Component {
     constructor(props) {
         super(props);
-        // this.state = {url: '', info: {}, stateVideo: '', loading: false};
-        this.state = {url: 'https://www.youtube.com/watch?v=90AiXO1pAiA', info: {}, stateVideo: ''};
-        setTimeout(() => {
-            this.handleUrlSearch(this.state.url);
-        }, 100);
+        this.state = {url: '', info: {}, stateVideo: '', loading: false};
+        // this.state = {url: 'https://www.youtube.com/watch?v=90AiXO1pAiA', info: {}, stateVideo: ''};
+        // setTimeout(() => {
+        //     this.handleUrlSearch({target: {value: this.state.url}});
+        // }, 100);
 
         this.handleUrlSearch = this.handleUrlSearch.bind(this);
         this.handleVideoDownload = this.handleVideoDownload.bind(this);
@@ -95,7 +65,8 @@ class DisplayContent extends Component {
         this.convertToMp3 = this.convertToMp3.bind(this);
     }
 
-    handleUrlSearch(videoUrl) {
+    handleUrlSearch(e) {
+        let videoUrl = e.target.value;
         // Set info to loading
         let info = this.state.info;
         info.loading = true;
@@ -135,7 +106,7 @@ class DisplayContent extends Component {
             {cwd: ''}
         );
 
-        video.on('info', function(info) {
+        video.on('info', function (info) {
             self.state.info.size = info.size;
         });
 
