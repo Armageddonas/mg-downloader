@@ -50,7 +50,7 @@ function InfoVideo(props) {
 class DisplayContent extends Component {
     constructor(props) {
         super(props);
-        this.state = {url: '', info: {}, stateVideo: '', loading: false};
+        this.state = {url: '', info: {}, stateVideo: ''};
         // this.state = {url: 'https://www.youtube.com/watch?v=90AiXO1pAiA', info: {}, stateVideo: ''};
         // setTimeout(() => {
         //     this.handleUrlSearch({target: {value: this.state.url}});
