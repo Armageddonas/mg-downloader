@@ -101,7 +101,7 @@ class InfoItem extends Component {
             );
 
         return (
-            <List.Item>
+            <List.Item style={{textAlign:'left'}}>
                 <List.Content floated='right'>
                     <Icon onClick={this.handleVideoDownload} name='download' size='large'/>
                 </List.Content>
