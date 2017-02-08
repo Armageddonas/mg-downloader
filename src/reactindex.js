@@ -1,11 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import MainWindow from './components/mainWindow/mainWindow'
+import { Container, Header } from 'semantic-ui-react'
+
 
 ReactDOM.render(
-    <div>
-        <h1>MG Downloader</h1>
+    <Container>
+        <br/>
+        <Header textAlign="center" as="h1">MG Downloader</Header>
+        <br/>
         <MainWindow/>
-    </div>,
+    </Container>,
     document.getElementById('root')
 );

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Progress, Icon, Button, Image, List } from 'semantic-ui-react'
 
 var fs = require('fs');
 var youtubedl = require('youtube-dl');
@@ -9,7 +10,7 @@ var FfmpegCommand = require('fluent-ffmpeg');
 class InfoItem extends Component {
     constructor(props) {
         super(props);
-        this.state = {stateVideo: '', size: '', percent: ''};
+        this.state = {stateVideo: '', size: '', percent: '0'};
 
         var saveDir = os.homedir() + '/Downloads/';
 
@@ -67,7 +68,7 @@ class InfoItem extends Component {
             if (size) {
                 var percent = (pos / size * 100).toFixed(0);
                 // Scale down to 80%
-                percent = (percent * 0.8).toFixed(0);
+                percent = (percent * 0.90).toFixed(0);
                 self.setState({percent: percent});
             }
         });
@@ -100,14 +101,19 @@ class InfoItem extends Component {
             );
 
         return (
-            <div>
-                <h3>{this.props.video.title}</h3>
-                <img src={this.props.video.thumbnail} alt="no image" width="120" height="120"/>
-                <p>downloading state: {this.state.stateVideo}</p>
-                <p>progress: {this.state.percent}%</p>
-                <button onClick={this.handleVideoDownload}>Dl</button>
-                <button onClick={this.handleVideoRemove}>Rm</button>
-            </div>
+            <List.Item>
+                <List.Content floated='right'>
+                    <Icon onClick={this.handleVideoDownload} name='download' size='large'/>
+                </List.Content>
+                <List.Content floated='right'>
+                    <Icon onClick={this.handleVideoRemove} name='remove' size='large'/>
+                </List.Content>
+                <Image avatar src={this.props.video.thumbnail} />
+                <List.Content>
+                    {this.props.video.title}
+                </List.Content>
+                <Progress percent={this.state.percent} progress indicating={(this.state.percent!=0) && (this.state.percent!=100)} color='green'/>
+            </List.Item>
         );
     }
 }
@@ -119,9 +125,9 @@ function InfoList(props) {
         <InfoItem key={video.id} video={video} handleRemoveVideo={props.handleRemoveVideo}/>);
 
     return (
-        <div>
+        <List divided verticalAlign='middle' size="large">
             {listItems}
-        </div>
+        </List>
     );
 }
 
@@ -137,7 +143,6 @@ class Info extends Component {
 
         return (
             <div>
-                <h2>Info</h2>
                 <InfoList videos={this.props.videos} handleRemoveVideo={this.props.handleRemoveVideo}/>
             </div>
         );

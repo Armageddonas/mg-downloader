@@ -24,7 +24,7 @@
         ]
       },
       "electronPackagerConfig": {
-        "version-string":{
+        "version-string": {
           "ProductName": "MG Downloader",
           "CompanyName": "mgd"
         }
@@ -48,6 +48,7 @@
     "fluent-ffmpeg": "^2.1.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "semantic-ui-react": "^0.64.7",
     "youtube-dl": "^1.11.1"
   },
   "devDependencies": {

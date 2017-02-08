@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import Info from '../Info/Info'
 var youtubedl = require('youtube-dl');
+import { Input } from 'semantic-ui-react'
+
 
 function validateYouTubeUrl(yturl)
 {
@@ -19,22 +21,18 @@ function validateYouTubeUrl(yturl)
 
 function SearchVideo(props) {
     return (
-        <div>
-            <p>info state: {props.loading == true ? 'loading...' : ''}</p>
-            <input size="40" onChange={props.onChange} value={props.url} type="text"/>
-        </div>
+        <Input fluid onChange={props.onChange} value={props.url} type="text"/>
     );
 }
 
 class DisplayContent extends Component {
     constructor(props) {
         super(props);
-        this.state = {url: '', videos: [], stateVideo: ''};
-        // this.state = {url: '', info: {}, stateVideo: ''};
-        // this.state = {url: 'https://www.youtube.com/watch?v=90AiXO1pAiA', info: {}, stateVideo: ''};
-        // setTimeout(() => {
-        //     this.handleUrlSearch({target: {value: this.state.url}});
-        // }, 100);
+        // this.state = {url: '', videos: [], stateVideo: ''};
+        this.state = {url: 'https://www.youtube.com/watch?v=90AiXO1pAiA', videos: [], stateVideo: ''};
+        setTimeout(() => {
+            this.handleUrlSearch({target: {value: this.state.url}});
+        }, 100);
 
 
         this.handleUrlSearch = this.handleUrlSearch.bind(this);
@@ -107,6 +105,7 @@ class DisplayContent extends Component {
         return (
             <div>
                 <SearchVideo onChange={this.handleUrlSearch} url={this.state.url}/>
+                <br/>
                 <Info videos={this.state.videos} handleRemoveVideo={this.handleRemoveVideo}/>
             </div>
         );
