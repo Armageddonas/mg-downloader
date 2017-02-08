@@ -1,19 +1,21 @@
 import React, {Component} from 'react';
-
-var fs = require('fs');
+import Info from '../Info/Info'
 var youtubedl = require('youtube-dl');
 
-const os = require('os');
-var FfmpegCommand = require('fluent-ffmpeg');
-
-// var util = require('util');
-// var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'w'});
-// var log_stdout = process.stdout;
-//
-// console.log = function(d) { //
-//     log_file.write(util.format(d) + '\n');
-//     log_stdout.write(util.format(d) + '\n');
-// };
+function validateYouTubeUrl(yturl)
+{
+    var url = yturl;
+    if (url != undefined || url != '') {
+        var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+        var match = url.match(regExp);
+        if (match && match[2].length == 11) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+}
 
 function SearchVideo(props) {
     return (
@@ -24,33 +26,11 @@ function SearchVideo(props) {
     );
 }
 
-function DownloadVideo(props) {
-    return (
-        <div>
-            <input type="submit" onClick={props.onChange} value="download"/>
-        </div>
-    );
-}
-
-function InfoVideo(props) {
-    if (props.info.title === undefined || props.info.title === '')
-        return <h2>Info</h2>;
-
-    return (
-        <div>
-            <h2>Info</h2>
-            <h3>{props.info.title}</h3>
-            <img src={props.info.thumbnail} alt="no image" width="120" height="120"/>
-            <p>downloading state: {props.stateVideo}</p>
-        </div>
-    );
-}
-
-
 class DisplayContent extends Component {
     constructor(props) {
         super(props);
-        this.state = {url: '', info: {}, stateVideo: ''};
+        this.state = {url: '', videos: [], stateVideo: ''};
+        // this.state = {url: '', info: {}, stateVideo: ''};
         // this.state = {url: 'https://www.youtube.com/watch?v=90AiXO1pAiA', info: {}, stateVideo: ''};
         // setTimeout(() => {
         //     this.handleUrlSearch({target: {value: this.state.url}});
@@ -58,9 +38,7 @@ class DisplayContent extends Component {
 
 
         this.handleUrlSearch = this.handleUrlSearch.bind(this);
-        this.handleVideoDownload = this.handleVideoDownload.bind(this);
-        this.downloadMp4 = this.downloadMp4.bind(this);
-        this.convertToMp3 = this.convertToMp3.bind(this);
+        this.handleRemoveVideo = this.handleRemoveVideo.bind(this);
     }
 
     handleUrlSearch(e) {
@@ -68,97 +46,68 @@ class DisplayContent extends Component {
         let videoUrl = e.target.value;
         this.setState({url: videoUrl});
 
+        // Check if url is valid and if it already exists in the list
+        if (!validateYouTubeUrl(videoUrl) || this.findIndexByUrl(videoUrl) > -1) return;
+
         // Set info to loading
-        let info = this.state.info;
+        let index = this.state.videos.length;
+        let info = {};
         info.loading = true;
-        this.setState({info: info});
+        this.setState({videos: this.state.videos.concat([info])});
 
         // Get video info
         console.log('Fetching video info');
         let self = this;
         youtubedl.getInfo(videoUrl, [], function (err, info) {
-            if (err) throw err;
+            if (err) {
+                self.state.videos.splice(index, 1);
+                throw err;
+            }
 
             let videoInfo = {
                 title: info.title,
                 thumbnail: info.thumbnail,
                 description: info.description,
+                id: info.id,
+                url: videoUrl,
                 loading: false
             };
 
-            self.setState({info: videoInfo})
+            self.state.videos.splice(index, 1, videoInfo);
+            self.setState({videos: self.state.videos});
         });
     }
 
-    handleVideoDownload() {
-        console.log('run download');
-
-        this.downloadMp4(this.convertToMp3);
-    }
-
-    downloadMp4(onCompletion) {
-        let self = this;
-        this.setState({stateVideo: 'downloading video...'});
-
-        // Video config
-        let video = youtubedl(
-            this.state.url,
-            ['--format=18'],
-            {cwd: ''}
-        );
-
-        // Get video size
-        video.on('info', function (info) {
-            self.state.info.size = info.size;
-        });
-
-        // Save video
-        video.pipe(fs.createWriteStream(this.props.downloadPath + 'temp.mp4'));
-
-        // Sense end of downloading
-        video.on('end', function () {
-            console.log('finished downloading!');
-            self.setState({stateVideo: 'finished downloading'});
-            onCompletion();
-        });
-
-        // Calculate percentage downloaded
-        var pos = 0;
-        video.on('data', function data(chunk) {
-            pos += chunk.length;
-            let size = self.state.info.size;
-            if (size) {
-                var percent = (pos / size * 100).toFixed(0);
-                self.setState({stateVideo: 'percentage ' + percent + '%'});
+    findIndexByUrl(url) {
+        let pos = -1;
+        for (var i = 0; i < this.state.videos.length; i++) {
+            if (this.state.videos[i].url === url) {
+                pos = i;
+                break;
             }
-        });
+        }
+        return pos
     }
 
-    convertToMp3() {
-        this.setState({stateVideo: 'converting to mp3...'});
+    handleRemoveVideo(id) {
+        let pos = -1;
+        for (var i = 0; i < this.state.videos.length; i++) {
+            if (this.state.videos[i].id === id) {
+                pos = i;
+                break;
+            }
+        }
+        this.state.videos.splice(pos, 1);
 
-        // Load video file
-        let proc = FfmpegCommand(this.props.downloadPath + '/temp.mp4');
-
-        // Load ffmpeg binary
-        if (os.platform() === 'win32') proc.setFfmpegPath(__dirname + '\\ffmpeg');
-
-        // Convert to mp3
-        let self = this;
-        proc.saveToFile(this.props.downloadPath + this.state.info.title + '.mp3')
-            .on('end', function () {
-                    self.setState({stateVideo: 'converted mp3'});
-                    console.log("converted mp3");
-                }
-            );
+        this.setState({videos: this.state.videos});
     }
+
 
     render() {
         return (
             <div>
-                <SearchVideo onChange={this.handleUrlSearch} loading={this.state.info.loading} url={this.state.url}/>
-                <DownloadVideo onChange={this.handleVideoDownload}/>
-                <InfoVideo info={this.state.info} stateVideo={this.state.stateVideo} title="test" imagesrc=""/>
+                <SearchVideo onChange={this.handleUrlSearch} url={this.state.url}/>
+                <Info videos={this.state.videos} handleRemoveVideo={this.handleRemoveVideo}/>
             </div>
         );
     }
