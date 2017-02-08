@@ -61,10 +61,8 @@ class MainWindow extends Component {
                                         <Header as="h1">MG Downloader</Header>
                                     </Grid.Column>
                                     <Grid.Column width={3}>
-                                        <Icon name="settings" onClick={this.toggleVisibility}/>
+                                        <Icon name="settings" size="large" onClick={this.toggleVisibility}/>
                                     </Grid.Column>
-                                    {/*<Header textAlign="center" as="h1">MG Downloader</Header>*/}
-                                    {/*<Icon name="settings" onClick={this.toggleVisibility}/>*/}
                                 </Grid>
                                 <br/>
                                 <DisplayContent downloadPath={this.state.downloadPath}/>
