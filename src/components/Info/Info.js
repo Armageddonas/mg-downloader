@@ -9,7 +9,7 @@ var FfmpegCommand = require('fluent-ffmpeg');
 class InfoItem extends Component {
     constructor(props) {
         super(props);
-        this.state = {stateVideo: '', size: ''};
+        this.state = {stateVideo: '', size: '', percent: ''};
 
         var saveDir = os.homedir() + '/Downloads/';
 
@@ -34,7 +34,8 @@ class InfoItem extends Component {
 
     downloadMp4(onCompletion) {
         let self = this;
-        // this.setState({stateVideo: 'downloading video...'});
+        this.setState({stateVideo: 'downloading video...'});
+        this.setState({percent: 0});
 
         // Video config
         let video = youtubedl(
@@ -65,7 +66,9 @@ class InfoItem extends Component {
             let size = self.state.size;
             if (size) {
                 var percent = (pos / size * 100).toFixed(0);
-                self.setState({stateVideo: 'percentage ' + percent + '%'});
+                // Scale down to 80%
+                percent = (percent * 0.8).toFixed(0);
+                self.setState({percent: percent});
             }
         });
     }
@@ -84,6 +87,7 @@ class InfoItem extends Component {
         proc.saveToFile(this.downloadPath + this.props.video.title + '.mp3')
             .on('end', function () {
                     self.setState({stateVideo: 'converted mp3'});
+                    self.setState({percent: 100});
                     console.log("converted mp3");
                 }
             );
@@ -100,6 +104,7 @@ class InfoItem extends Component {
                 <h3>{this.props.video.title}</h3>
                 <img src={this.props.video.thumbnail} alt="no image" width="120" height="120"/>
                 <p>downloading state: {this.state.stateVideo}</p>
+                <p>progress: {this.state.percent}%</p>
                 <button onClick={this.handleVideoDownload}>Dl</button>
                 <button onClick={this.handleVideoRemove}>Rm</button>
             </div>
