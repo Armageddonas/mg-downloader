@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
-import { Input } from 'semantic-ui-react'
+import {Input} from 'semantic-ui-react'
 
 function DownloadFolder(props) {
     return (
         <div>
             <h3>Settings</h3>
             <h4>Download path</h4>
-            <input style={{color:'black'}} size="40" onChange={props.onChange} value={props.downloadPath} type="text"/>
+            <input style={{color: 'black', backgroundColor: props.downloadPath.exists ? 'white' : 'red'}} size="40"
+                   onChange={props.onChange} value={props.downloadPath.value} type="text"/>
         </div>
     );
 }

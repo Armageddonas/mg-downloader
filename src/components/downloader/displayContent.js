@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
+import {Input} from 'semantic-ui-react'
+
 import Info from '../Info/Info'
-var youtubedl = require('youtube-dl');
-import { Input } from 'semantic-ui-react'
+import videoTools from '../../tools/videoTools/videoTools'
+import {findUniqueObjectPos} from '../../tools/utilities/arrayUtilities'
 
-
-function validateYouTubeUrl(yturl)
-{
-    var url = yturl;
+function validateYouTubeUrl(ytUrl) {
+    let url = ytUrl;
     if (url != undefined || url != '') {
-        var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
-        var match = url.match(regExp);
+        let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+        let match = url.match(regExp);
         if (match && match[2].length == 11) {
             return true;
         }
@@ -37,69 +37,47 @@ class DisplayContent extends Component {
 
         this.handleUrlSearch = this.handleUrlSearch.bind(this);
         this.handleRemoveVideo = this.handleRemoveVideo.bind(this);
+        this.onInfoFound = this.onInfoFound.bind(this);
+        this.onInfoError = this.onInfoError.bind(this);
     }
 
     handleUrlSearch(e) {
         // Get url from input
         let videoUrl = e.target.value;
-        this.setState({url: videoUrl});
 
         // Check if url is valid and if it already exists in the list
-        if (!validateYouTubeUrl(videoUrl) || this.findIndexByUrl(videoUrl) > -1) return;
+        if (!validateYouTubeUrl(videoUrl) || findUniqueObjectPos(this.state.videos, 'url', videoUrl) > -1) return;
+
+        this.setState({url: videoUrl});
 
         // Set info to loading
-        let index = this.state.videos.length;
         let info = {};
         info.loading = true;
+        info.url = videoUrl;
         this.setState({videos: this.state.videos.concat([info])});
 
-        // Get video info
-        console.log('Fetching video info');
-        let self = this;
-        youtubedl.getInfo(videoUrl, [], function (err, info) {
-            if (err) {
-                self.state.videos.splice(index, 1);
-                throw err;
-            }
-
-            let videoInfo = {
-                title: info.title,
-                thumbnail: info.thumbnail,
-                description: info.description,
-                id: info.id,
-                url: videoUrl,
-                loading: false
-            };
-
-            self.state.videos.splice(index, 1, videoInfo);
-            self.setState({videos: self.state.videos});
-        });
+        videoTools.getInfo(videoUrl, this.onInfoFound, this.onInfoError);
     }
 
-    findIndexByUrl(url) {
-        let pos = -1;
-        for (var i = 0; i < this.state.videos.length; i++) {
-            if (this.state.videos[i].url === url) {
-                pos = i;
-                break;
-            }
-        }
-        return pos
-    }
-
-    handleRemoveVideo(id) {
-        let pos = -1;
-        for (var i = 0; i < this.state.videos.length; i++) {
-            if (this.state.videos[i].id === id) {
-                pos = i;
-                break;
-            }
-        }
-        this.state.videos.splice(pos, 1);
-
+    onInfoFound(videoInfo) {
+        let index = findUniqueObjectPos(this.state.videos, 'url', videoInfo.url);
+        this.state.videos.splice(index, 1, videoInfo);
         this.setState({videos: this.state.videos});
     }
 
+    onInfoError(url) {
+        let index = findUniqueObjectPos(this.state.videos, 'url', url);
+        this.state.videos.splice(index, 1);
+        this.setState({videos: this.state.videos});
+        // todo: add toast
+    }
+
+    handleRemoveVideo(id) {
+        let index = findUniqueObjectPos(this.state.videos, 'id', id);
+        this.state.videos.splice(index, 1);
+
+        this.setState({videos: this.state.videos});
+    }
 
     render() {
         return (
@@ -107,7 +85,7 @@ class DisplayContent extends Component {
                 <SearchVideo onChange={this.handleUrlSearch} url={this.state.url}/>
                 <br/>
                 <br/>
-                <Info videos={this.state.videos} handleRemoveVideo={this.handleRemoveVideo}/>
+                <Info videos={this.state.videos} handleRemoveVideo={this.handleRemoveVideo} downloadPath={this.props.downloadPath}/>
             </div>
         );
     }

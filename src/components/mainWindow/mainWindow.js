@@ -1,27 +1,23 @@
 import React, {Component} from 'react';
-import {Sidebar, Segment, Grid, Menu, Header, Icon, Container} from 'semantic-ui-react'
+import {Sidebar, Segment, Grid, Menu, Header, Icon, Message} from 'semantic-ui-react'
+
 import DisplayContent from '../downloader/displayContent'
 import Settings from '../settings/settings'
+import fileManager from '../../tools/fileManager/fileManager'
 
-const os = require('os');
-var saveDir = os.homedir() + '/Downloads/';
 
 class MainWindow extends Component {
     constructor(props) {
         super(props);
-        // localStorage.clear();
-        //todo: Check if path exists
-        let downloadPathLS = JSON.parse(localStorage.getItem('downloadPath'));
-        let downloadPath = downloadPathLS != null ? downloadPathLS : saveDir;
-        this.state = {downloadPath: downloadPath, visible: false};
+        this.state = {downloadPath: fileManager.getDownloadPath(), visible: false};
 
         this.handleDownloadFolder = this.handleDownloadFolder.bind(this);
         this.toggleVisibility = this.toggleVisibility.bind(this);
     }
 
     handleDownloadFolder(e) {
-        localStorage.setItem('downloadPath', JSON.stringify(e.target.value));
-        this.setState({downloadPath: e.target.value});
+        let path = fileManager.setDownloadPath(e.target.value);
+        this.setState({downloadPath: path});
     }
 
     toggleVisibility() {
@@ -57,12 +53,24 @@ class MainWindow extends Component {
                             <Grid.Column mobile={16} tablet={14} computer={8}>
                                 <br/>
                                 <Grid columns='equal' centered>
-                                    <Grid.Column>
-                                        <Header as="h1">MG Downloader</Header>
-                                    </Grid.Column>
-                                    <Grid.Column width={3}>
-                                        <Icon name="settings" size="large" onClick={this.toggleVisibility}/>
-                                    </Grid.Column>
+                                    <Grid.Row>
+                                        <Grid.Column>
+                                            <Header as="h1">MG Downloader</Header>
+                                        </Grid.Column>
+                                        <Grid.Column width={3}>
+                                            <Icon name="settings" size="large" onClick={this.toggleVisibility}/>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                    <Grid.Row>
+                                        <Grid.Column>
+                                            <Message
+                                                style={{display: this.state.downloadPath.exists ? 'none' : 'block'}}
+                                                negative>
+                                                <Message.Header>Download folder is invalid</Message.Header>
+                                                <p>You can fix the path from settings</p>
+                                            </Message>
+                                        </Grid.Column>
+                                    </Grid.Row>
                                 </Grid>
                                 <br/>
                                 <DisplayContent downloadPath={this.state.downloadPath}/>
