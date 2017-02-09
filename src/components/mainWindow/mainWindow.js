@@ -42,8 +42,8 @@ class MainWindow extends Component {
                     <Menu.Item name='path'>
                         <Settings onPathChange={this.handleDownloadFolder} downloadPath={this.state.downloadPath}/>
                     </Menu.Item>
-                    <Menu.Item name='arrowleft'>
-                        <Icon onClick={this.toggleVisibility} name='left arrow'/>
+                    <Menu.Item name='back'>
+                        <Icon onClick={this.toggleVisibility} link name='left arrow'/>
                         Back
                     </Menu.Item>
                 </Sidebar>
