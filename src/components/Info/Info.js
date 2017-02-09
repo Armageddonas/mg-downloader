@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Progress, Icon, Image, List} from 'semantic-ui-react'
+import {Progress, Icon, Image, List, Popup} from 'semantic-ui-react'
 import videoTools from '../../tools/videoTools/videoTools'
 
 
@@ -39,22 +39,46 @@ class InfoItem extends Component {
                 <p>loading...</p>
             );
 
+        let elDownloadIcon = (
+            <Popup
+                trigger={
+                    <Icon name='download' size='large' color="blue"
+                          link={this.props.downloadPath.exists}
+                          disabled={!this.props.downloadPath.exists}
+                          onClick={this.props.downloadPath.exists && this.handleVideoDownload}/>
+                }
+                content='Download'
+            />
+        );
+
+        let elRemoveIcon = (
+            <Popup
+                trigger={
+                    <Icon link name='remove' size='large' color="red"
+                          onClick={this.handleVideoRemove}/>                }
+                content='Remove from list'
+            />
+        );
+
+        let elProgress = (
+            <Progress progress color='green'
+                      percent={this.state.percent}
+                      indicating={(this.state.percent != 0) && (this.state.percent != 100)}/>
+        );
+
         return (
             <List.Item style={{textAlign: 'left'}}>
                 <List.Content floated='right'>
-                    <Icon onClick={this.props.downloadPath.exists && this.handleVideoDownload}
-                          link={this.props.downloadPath.exists} name='download' size='large' color="blue"
-                          disabled={!this.props.downloadPath.exists}/>
+                    {elDownloadIcon}
                 </List.Content>
                 <List.Content floated='right'>
-                    <Icon onClick={this.handleVideoRemove} link name='remove' size='large' color="red"/>
+                    {elRemoveIcon}
                 </List.Content>
                 <Image avatar src={this.props.video.thumbnail}/>
                 <List.Content>
                     {this.props.video.title}
                 </List.Content>
-                <Progress percent={this.state.percent} progress
-                          indicating={(this.state.percent != 0) && (this.state.percent != 100)} color='green'/>
+                {elProgress}
             </List.Item>
         );
     }
@@ -63,8 +87,9 @@ class InfoItem extends Component {
 function InfoList(props) {
 
     const listItems = props.videos.map((video) =>
-        <InfoItem key={video.id} video={video} handleRemoveVideo={props.handleRemoveVideo}
-                  downloadPath={props.downloadPath}/>);
+        <InfoItem key={video.id} video={video}
+                  downloadPath={props.downloadPath}
+                  handleRemoveVideo={props.handleRemoveVideo}/>);
 
     return (
         <List divided ordered size="large">
@@ -85,8 +110,9 @@ class Info extends Component {
 
         return (
             <div>
-                <InfoList videos={this.props.videos} handleRemoveVideo={this.props.handleRemoveVideo}
-                          downloadPath={this.props.downloadPath}/>
+                <InfoList videos={this.props.videos}
+                          downloadPath={this.props.downloadPath}
+                          handleRemoveVideo={this.props.handleRemoveVideo}/>
             </div>
         );
     }
