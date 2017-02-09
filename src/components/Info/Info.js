@@ -103,10 +103,10 @@ class InfoItem extends Component {
         return (
             <List.Item style={{textAlign:'left'}}>
                 <List.Content floated='right'>
-                    <Icon onClick={this.handleVideoDownload} name='download' size='large'/>
+                    <Icon onClick={this.handleVideoDownload} link name='download' size='large' color="blue"/>
                 </List.Content>
                 <List.Content floated='right'>
-                    <Icon onClick={this.handleVideoRemove} name='remove' size='large'/>
+                    <Icon onClick={this.handleVideoRemove} link name='remove' size='large' color="red"/>
                 </List.Content>
                 <Image avatar src={this.props.video.thumbnail} />
                 <List.Content>
@@ -121,11 +121,10 @@ class InfoItem extends Component {
 function InfoList(props) {
 
     const listItems = props.videos.map((video) =>
-        // Correct! Key should be specified inside the array.
         <InfoItem key={video.id} video={video} handleRemoveVideo={props.handleRemoveVideo}/>);
 
     return (
-        <List divided verticalAlign='middle' size="large">
+        <List divided ordered size="large">
             {listItems}
         </List>
     );

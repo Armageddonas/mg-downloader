@@ -106,6 +106,7 @@ class DisplayContent extends Component {
             <div>
                 <SearchVideo onChange={this.handleUrlSearch} url={this.state.url}/>
                 <br/>
+                <br/>
                 <Info videos={this.state.videos} handleRemoveVideo={this.handleRemoveVideo}/>
             </div>
         );
