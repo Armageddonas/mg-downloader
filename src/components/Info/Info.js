@@ -15,6 +15,9 @@ class InfoItem extends Component {
     }
 
     handleVideoDownload() {
+        // Disable download if folder doesn't exists
+        if (!this.props.downloadPath.exists) return;
+
         console.log('run download');
 
         let onMp4Complete = videoTools.convertToMp3(this.props.video, this.props.downloadPath.value, this.onMp3Completion);
@@ -45,7 +48,7 @@ class InfoItem extends Component {
                     <Icon name='download' size='large' color="blue"
                           link={this.props.downloadPath.exists}
                           disabled={!this.props.downloadPath.exists}
-                          onClick={this.props.downloadPath.exists && this.handleVideoDownload}/>
+                          onClick={this.handleVideoDownload}/>
                 }
                 content='Download'
             />
@@ -87,7 +90,8 @@ class InfoItem extends Component {
 function InfoList(props) {
 
     const listItems = props.videos.map((video) =>
-        <InfoItem key={video.id} video={video}
+        <InfoItem key={video.id || video.url}
+                  video={video}
                   downloadPath={props.downloadPath}
                   handleRemoveVideo={props.handleRemoveVideo}/>);
 
