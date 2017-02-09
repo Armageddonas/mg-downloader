@@ -28,11 +28,11 @@ function SearchVideo(props) {
 class DisplayContent extends Component {
     constructor(props) {
         super(props);
-        // this.state = {url: '', videos: [], stateVideo: ''};
-        this.state = {url: 'https://www.youtube.com/watch?v=90AiXO1pAiA', videos: [], stateVideo: ''};
-        setTimeout(() => {
-            this.handleUrlSearch({target: {value: this.state.url}});
-        }, 100);
+        this.state = {url: '', videos: [], stateVideo: ''};
+        // this.state = {url: 'https://www.youtube.com/watch?v=90AiXO1pAiA', videos: [], stateVideo: ''};
+        // setTimeout(() => {
+        //     this.handleUrlSearch({target: {value: this.state.url}});
+        // }, 100);
 
 
         this.handleUrlSearch = this.handleUrlSearch.bind(this);
