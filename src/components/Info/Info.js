@@ -68,6 +68,39 @@ class ItemSettings extends Component {
     }
 }
 
+function DownloadIcon(props) {
+    return (
+        <Popup
+            trigger={
+                <Icon name='download' size='large' color="blue"
+                      link={props.downloadPath.exists}
+                      disabled={!props.downloadPath.exists}
+                      onClick={props.handleVideoDownload}/>
+            }
+            content='Download'
+        />
+    );
+}
+
+function RemoveIcon(props) {
+    return (
+        <Popup
+            trigger={
+                <Icon link name='remove' size='large' color="red"
+                      onClick={props.handleVideoRemove}/>                }
+            content='Remove from list'
+        />
+    );
+}
+
+function ProgressBar(props) {
+    return (
+        <Progress progress color='green'
+                  percent={props.percent}
+                  indicating={(props.percent != 0) && (props.percent != 100)}/>
+    );
+}
+
 class InfoItem extends Component {
     constructor(props) {
         super(props);
@@ -88,17 +121,12 @@ class InfoItem extends Component {
         if (!this.props.downloadPath.exists) return;
         console.log('run download');
 
-
         let onMp4Complete = null;
         if (this.state.format === 'audio' || this.state.format === 'both') {
             onMp4Complete = videoTools.convertToMp3(this.videoFilename, this.audioFilename, this.onMp4GetPercentage, this.onMp3Completion);
         }
 
         videoTools.downloadMp4(this.videoFilename, this.props.video.url, onMp4Complete, this.onMp4GetPercentage);
-    }
-
-    handleFormatCheckbox(e, {value}) {
-        this.setState({format: value});
     }
 
     onMp3Completion() {
@@ -114,60 +142,33 @@ class InfoItem extends Component {
         this.props.handleRemoveVideo(this.props.video.id);
     }
 
+    handleFormatCheckbox(e, {value}) {
+        this.setState({format: value});
+    }
+
     render() {
         if (this.props.video.loading)
             return (
                 <p>loading...</p>
             );
 
-        let elDownloadIcon = (
-            <Popup
-                trigger={
-                    <Icon name='download' size='large' color="blue"
-                          link={this.props.downloadPath.exists}
-                          disabled={!this.props.downloadPath.exists}
-                          onClick={this.handleVideoDownload}/>
-                }
-                content='Download'
-            />
-        );
-
-        let elSettingsIcon = (
-            <ItemSettings handleFormatCheckbox={this.handleFormatCheckbox}
-                          format={this.state.format}/>
-        );
-
-        let elRemoveIcon = (
-            <Popup
-                trigger={
-                    <Icon link name='remove' size='large' color="red"
-                          onClick={this.handleVideoRemove}/>                }
-                content='Remove from list'
-            />
-        );
-
-        let elProgress = (
-            <Progress progress color='green'
-                      percent={this.state.percent}
-                      indicating={(this.state.percent != 0) && (this.state.percent != 100)}/>
-        );
-
         return (
             <List.Item style={{textAlign: 'left'}}>
                 <List.Content floated='right'>
-                    {elDownloadIcon}
+                    <DownloadIcon downloadPath={this.props.downloadPath}
+                                  handleVideoDownload={this.handleVideoDownload}/>
                 </List.Content>
                 <List.Content floated='right'>
-                    {elSettingsIcon}
+                    <ItemSettings format={this.state.format} handleFormatCheckbox={this.handleFormatCheckbox}/>
                 </List.Content>
                 <List.Content floated='right'>
-                    {elRemoveIcon}
+                    <RemoveIcon handleVideoRemove={this.handleVideoRemove}/>
                 </List.Content>
                 <Image avatar src={this.props.video.thumbnail}/>
                 <List.Content>
                     {this.props.video.title}
                 </List.Content>
-                {elProgress}
+                <ProgressBar percent={this.state.percent}/>
             </List.Item>
         );
     }
@@ -188,24 +189,17 @@ function InfoList(props) {
     );
 }
 
-class Info extends Component {
-    constructor(props) {
-        super(props);
-    }
+function Info(props) {
+    if (props.videos.size == 0)
+        return <h2>Info</h2>;
 
-
-    render() {
-        if (this.props.videos.size == 0)
-            return <h2>Info</h2>;
-
-        return (
-            <div>
-                <InfoList videos={this.props.videos}
-                          downloadPath={this.props.downloadPath}
-                          handleRemoveVideo={this.props.handleRemoveVideo}/>
-            </div>
-        );
-    }
+    return (
+        <div>
+            <InfoList videos={props.videos}
+                      downloadPath={props.downloadPath}
+                      handleRemoveVideo={props.handleRemoveVideo}/>
+        </div>
+    );
 }
 
 export default Info;
