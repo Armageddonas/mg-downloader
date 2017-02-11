@@ -15,8 +15,8 @@ class MainWindow extends Component {
         this.toggleVisibility = this.toggleVisibility.bind(this);
     }
 
-    handleDownloadFolder(e) {
-        let path = fileManager.setDownloadPath(e.target.value);
+    handleDownloadFolder(dirPath) {
+        let path = fileManager.setDownloadPath(dirPath);
         this.setState({downloadPath: path});
     }
 
@@ -55,7 +55,7 @@ class MainWindow extends Component {
                                 <Grid columns='equal' centered>
                                     <Grid.Row>
                                         <Grid.Column>
-                                            <Header as="h1">MG Downloader</Header>
+                                            <Header as="h1">MeGa Downloader</Header>
                                         </Grid.Column>
                                         <Grid.Column width={3}>
                                             <Icon name="settings" size="large" onClick={this.toggleVisibility}/>
