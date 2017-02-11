@@ -44,11 +44,10 @@ class DisplayContent extends Component {
     handleUrlSearch(e) {
         // Get url from input
         let videoUrl = e.target.value;
+        this.setState({url: videoUrl});
 
         // Check if url is valid and if it already exists in the list
         if (!validateYouTubeUrl(videoUrl) || findUniqueObjectPos(this.state.videos, 'url', videoUrl) > -1) return;
-
-        this.setState({url: videoUrl});
 
         // Set info to loading
         let info = {};
