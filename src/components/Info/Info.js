@@ -19,8 +19,10 @@ class ItemSettings extends Component {
     }
 
     render() {
+        if(this.props.disabled === true) return <Icon name='setting' size='large' color="black" disabled/>;
+
         return (
-            <Modal size='small' trigger={<Icon link name='setting' size='large' color="black"/>}>
+            <Modal size='small' trigger={<Icon link name='setting' size='large' color="black" />}>
                 <Modal.Header style={{textAlign: 'center'}}>Item settings</Modal.Header>
                 <Modal.Content>
                     <Modal.Description>
@@ -169,7 +171,7 @@ class InfoItem extends Component {
                 <List.Content floated='right'>
                     <ItemSettings filename={this.state.filename} handleFilename={this.handleFilename}
                                   onPathChange={this.onPathChange} genericPath={this.props.downloadPath.value}
-                                  path={this.state.path}/>
+                                  path={this.state.path} disabled={this.state.percent === 100}/>
                 </List.Content>
                 <List.Content floated='right'>
                     <RemoveIcon handleVideoRemove={this.handleVideoRemove}/>
