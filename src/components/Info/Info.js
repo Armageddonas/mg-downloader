@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Progress, Input, Icon, Image, List, Popup, Modal, Grid} from 'semantic-ui-react'
 
-import {DownloadFolder} from '../settings/settings'
+import {DirectoryPicker} from '../settings/settings'
 
 import videoTools from '../../tools/videoTools/videoTools'
 const fs = require('fs');
@@ -31,8 +31,8 @@ class ItemSettings extends Component {
                             </Grid.Column>
                             <Grid.Column computer={8} tablet={10} mobile={16}>
                                 <Rename filename={this.props.filename} handleFilename={this.props.handleFilename}/>
-                                <DownloadFolder onPathChange={this.props.onPathChange}
-                                                genericPath={this.props.genericPath} path={this.props.path}/>
+                                <DirectoryPicker onPathChange={this.props.onPathChange}
+                                                 directory={this.props.directory}/>
                             </Grid.Column>
                             <Grid.Column>
                             </Grid.Column>
@@ -170,8 +170,9 @@ class InfoItem extends Component {
                 </List.Content>
                 <List.Content floated='right'>
                     <ItemSettings filename={this.state.filename} handleFilename={this.handleFilename}
-                                  onPathChange={this.onPathChange} genericPath={this.props.downloadPath.value}
-                                  path={this.state.path} disabled={this.state.percent === 100}/>
+                                  onPathChange={this.onPathChange}
+                                  directory={this.props.path || this.props.downloadPath.value}
+                                  disabled={this.state.percent === 100}/>
                 </List.Content>
                 <List.Content floated='right'>
                     <RemoveIcon handleVideoRemove={this.handleVideoRemove}/>

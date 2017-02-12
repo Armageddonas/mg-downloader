@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Icon, Grid, Input} from 'semantic-ui-react'
 const {dialog} = require('electron').remote;
 
-class DownloadFolder extends Component {
+class DirectoryPicker extends Component {
     constructor(props) {
         super(props);
 
@@ -29,7 +29,7 @@ class DownloadFolder extends Component {
                     <Grid.Row>
                         <Grid.Column>
                             <Input label="path" fluid readOnly
-                                   value={this.props.path ? this.props.path : this.props.genericPath}
+                                   value={this.props.directory}
                                    type="text"/>
 
                         </Grid.Column>
@@ -49,12 +49,12 @@ function Settings(props) {
         <div>
             <h3>Settings</h3>
             <h4>Download path</h4>
-            <DownloadFolder onPathChange={props.onPathChange} genericPath={props.genericPath} path={props.path}/>
+            <DirectoryPicker onPathChange={props.onPathChange} directory={props.downloadFolder}/>
         </div>
     );
 }
 
 export {
     Settings,
-    DownloadFolder
+    DirectoryPicker
 }
