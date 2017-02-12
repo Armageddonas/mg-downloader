@@ -6,7 +6,7 @@ var fs = require('fs');
 
 class videoTools {
 
-    static downloadMp4(videoFilename, videoUrl, onCompletion, onGetPercentage) {
+    static downloadFromServer(videoFilename, videoUrl, onCompletion, onGetPercentage) {
         // Zero percent on start
         onGetPercentage(0);
 
@@ -20,7 +20,7 @@ class videoTools {
         // Video config
         let videoDl = youtubedl(
             videoUrl,
-            ['--format=18'],
+            ['--format=bestaudio'],
             {cwd: ''}
         );
 
@@ -36,7 +36,7 @@ class videoTools {
         // Sense end of downloading
         videoDl.on('end', function () {
             console.log('finished downloading!');
-            if (onCompletion) onCompletion();
+            onCompletion();
         });
 
         // Calculate percentage downloaded
@@ -47,7 +47,7 @@ class videoTools {
             if (size) {
                 let percent = pos / size * 100;
                 // Scale down to 90%
-                if (onCompletion) percent = percent * 0.90;
+                percent = percent * 0.90;
                 onGetPercentage(percent);
             }
         });

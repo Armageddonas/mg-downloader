@@ -4,50 +4,6 @@ import {Progress, Form, Icon, Image, List, Popup, Modal} from 'semantic-ui-react
 import videoTools from '../../tools/videoTools/videoTools'
 const fs = require('fs');
 
-class FormatPicker extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {checked: 'audio'}
-    }
-
-    render() {
-        return (
-            <Form>
-                <Form.Field>
-                    <label>Format</label>
-                </Form.Field>
-                <Form.Group inline>
-                    <Form.Radio
-                        radio
-                        label='audio'
-                        name='checkboxRadioGroup'
-                        value='audio'
-                        checked={this.props.format === 'audio'}
-                        onChange={this.props.handleFormatCheckbox}
-                    />
-                    <Form.Radio
-                        radio
-                        label='video'
-                        name='checkboxRadioGroup'
-                        value='video'
-                        checked={this.props.format === 'video'}
-                        onChange={this.props.handleFormatCheckbox}
-                    />
-                    <Form.Radio
-                        radio
-                        label='both'
-                        name='checkboxRadioGroup'
-                        value='both'
-                        checked={this.props.format === 'both'}
-                        onChange={this.props.handleFormatCheckbox}
-                    />
-                </Form.Group>
-
-            </Form>
-        );
-    }
-}
-
 class ItemSettings extends Component {
     constructor(props) {
         super(props);
@@ -59,8 +15,7 @@ class ItemSettings extends Component {
                 <Modal.Header>Item settings</Modal.Header>
                 <Modal.Content>
                     <Modal.Description>
-                        <FormatPicker handleFormatCheckbox={this.props.handleFormatCheckbox}
-                                      format={this.props.format}/>
+
                     </Modal.Description>
                 </Modal.Content>
             </Modal>
@@ -87,7 +42,8 @@ function RemoveIcon(props) {
         <Popup
             trigger={
                 <Icon link name='remove' size='large' color="red"
-                      onClick={props.handleVideoRemove}/>                }
+                      onClick={props.handleVideoRemove}/>
+            }
             content='Remove from list'
         />
     );
@@ -104,46 +60,38 @@ function ProgressBar(props) {
 class InfoItem extends Component {
     constructor(props) {
         super(props);
-        this.state = {percent: '0', format: 'audio'};
-
-        this.videoFilename = this.props.downloadPath.value + '/' + this.props.video.title + '.mp4';
-        this.audioFilename = this.props.downloadPath.value + '/' + this.props.video.title + '.mp3';
+        this.state = {percent: '0'};
 
         this.handleVideoDownload = this.handleVideoDownload.bind(this);
         this.onMp3Completion = this.onMp3Completion.bind(this);
-        this.onMp4GetPercentage = this.onMp4GetPercentage.bind(this);
+        this.onGetPercentage = this.onGetPercentage.bind(this);
         this.handleVideoRemove = this.handleVideoRemove.bind(this);
-        this.handleFormatCheckbox = this.handleFormatCheckbox.bind(this);
     }
 
     handleVideoDownload() {
         // Disable download if folder doesn't exists
         if (!this.props.downloadPath.exists) return;
         console.log('run download');
+        // Get paths
+        this.tempFilename = this.props.downloadPath.value + '/' + this.props.video.title + '.temp';
+        this.audioFilename = this.props.downloadPath.value + '/' + this.props.video.title + '.mp3';
 
-        let onMp4Complete = null;
-        if (this.state.format === 'audio' || this.state.format === 'both') {
-            onMp4Complete = videoTools.convertToMp3(this.videoFilename, this.audioFilename, this.onMp4GetPercentage, this.onMp3Completion);
-        }
+        let onDownloadComplete = videoTools.convertToMp3(this.tempFilename, this.audioFilename, this.onGetPercentage, this.onMp3Completion);
 
-        videoTools.downloadMp4(this.videoFilename, this.props.video.url, onMp4Complete, this.onMp4GetPercentage);
+        videoTools.downloadFromServer(this.tempFilename, this.props.video.url, onDownloadComplete, this.onGetPercentage);
     }
 
     onMp3Completion() {
         this.setState({percent: 100});
-        if (this.state.format !== 'both') fs.unlink(this.videoFilename);
+        fs.unlink(this.tempFilename);
     }
 
-    onMp4GetPercentage(percentage) {
+    onGetPercentage(percentage) {
         this.setState({percent: percentage.toFixed(0)});
     }
 
     handleVideoRemove() {
         this.props.handleRemoveVideo(this.props.video.id);
-    }
-
-    handleFormatCheckbox(e, {value}) {
-        this.setState({format: value});
     }
 
     render() {
@@ -159,7 +107,7 @@ class InfoItem extends Component {
                                   handleVideoDownload={this.handleVideoDownload}/>
                 </List.Content>
                 <List.Content floated='right'>
-                    <ItemSettings format={this.state.format} handleFormatCheckbox={this.handleFormatCheckbox}/>
+                    <ItemSettings/>
                 </List.Content>
                 <List.Content floated='right'>
                     <RemoveIcon handleVideoRemove={this.handleVideoRemove}/>

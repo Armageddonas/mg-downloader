@@ -14,7 +14,6 @@ class DownloadFolder extends Component {
         let pathArray = dialog.showOpenDialog({
             properties: ['openDirectory']
         });
-        console.log(pathArray);
 
         if (pathArray) this.props.onPathChange(pathArray[0]);
     }
