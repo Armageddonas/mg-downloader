@@ -5,6 +5,7 @@ import {DownloadFolder} from '../settings/settings'
 
 import videoTools from '../../tools/videoTools/videoTools'
 const fs = require('fs');
+const {shell} = require('electron');
 
 function Rename(props) {
     return (
@@ -28,7 +29,8 @@ class ItemSettings extends Component {
                             </Grid.Column>
                             <Grid.Column computer={8} tablet={10} mobile={16}>
                                 <Rename filename={this.props.filename} handleFilename={this.props.handleFilename}/>
-                                <DownloadFolder onPathChange={this.props.onPathChange} genericPath={this.props.genericPath} path={this.props.path}/>
+                                <DownloadFolder onPathChange={this.props.onPathChange}
+                                                genericPath={this.props.genericPath} path={this.props.path}/>
                             </Grid.Column>
                             <Grid.Column>
                             </Grid.Column>
@@ -66,6 +68,31 @@ function RemoveIcon(props) {
     );
 }
 
+class FolderIcon extends Component {
+    constructor(props) {
+        super(props);
+
+        this.launchFolder = this.launchFolder.bind(this);
+    }
+
+    launchFolder() {
+        console.log(this.props.filepath);
+        shell.showItemInFolder(this.props.filepath);
+    }
+
+    render() {
+        return (
+            <Popup
+                trigger={
+                    <Icon link name='folder open' size='large' color="green"
+                          onClick={this.launchFolder}/>
+                }
+                content='Open containing folder'
+            />
+        );
+    }
+}
+
 function ProgressBar(props) {
     return (
         <Progress progress color='green'
@@ -77,7 +104,7 @@ function ProgressBar(props) {
 class InfoItem extends Component {
     constructor(props) {
         super(props);
-        this.state = {percent: '0', filename: this.props.video.title, path: null};
+        this.state = {percent: 0, filename: this.props.video.title, path: null};
 
         this.handleVideoDownload = this.handleVideoDownload.bind(this);
         this.onMp3Completion = this.onMp3Completion.bind(this);
@@ -92,18 +119,18 @@ class InfoItem extends Component {
         if (!this.props.downloadPath.exists) return;
         console.log('run download');
         // Get paths
-        let path = this.state.path ? this.state.path : this.props.downloadPath.value;
-        this.tempFilename = path + '/' + this.state.filename + '.temp';
-        this.audioFilename = path + '/' + this.state.filename + '.mp3';
+        let path = this.state.path || this.props.downloadPath.value;
+        this.tempFilepath = path + '/' + this.state.filename + '.temp';
+        this.audioFilepath = path + '/' + this.state.filename + '.mp3';
 
-        let onDownloadComplete = videoTools.convertToMp3(this.tempFilename, this.audioFilename, this.onGetPercentage, this.onMp3Completion);
+        let onDownloadComplete = videoTools.convertToMp3(this.tempFilepath, this.audioFilepath, this.onGetPercentage, this.onMp3Completion);
 
-        videoTools.downloadFromServer(this.tempFilename, this.props.video.url, onDownloadComplete, this.onGetPercentage);
+        videoTools.downloadFromServer(this.tempFilepath, this.props.video.url, onDownloadComplete, this.onGetPercentage);
     }
 
     onMp3Completion() {
         this.setState({percent: 100});
-        fs.unlink(this.tempFilename);
+        fs.unlink(this.tempFilepath);
     }
 
     onGetPercentage(percentage) {
@@ -131,12 +158,18 @@ class InfoItem extends Component {
         return (
             <List.Item style={{textAlign: 'left'}}>
                 <List.Content floated='right'>
-                    <DownloadIcon downloadPath={this.props.downloadPath}
-                                  handleVideoDownload={this.handleVideoDownload}/>
+                    {
+                        this.state.percent < 100 ?
+                            <DownloadIcon downloadPath={this.props.downloadPath}
+                                          handleVideoDownload={this.handleVideoDownload}/>
+                            :
+                            <FolderIcon filepath={this.audioFilepath}/>
+                    }
                 </List.Content>
                 <List.Content floated='right'>
                     <ItemSettings filename={this.state.filename} handleFilename={this.handleFilename}
-                                  onPathChange={this.onPathChange} genericPath={this.props.downloadPath.value} path={this.state.path}/>
+                                  onPathChange={this.onPathChange} genericPath={this.props.downloadPath.value}
+                                  path={this.state.path}/>
                 </List.Content>
                 <List.Content floated='right'>
                     <RemoveIcon handleVideoRemove={this.handleVideoRemove}/>
