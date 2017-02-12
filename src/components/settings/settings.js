@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Icon, Grid} from 'semantic-ui-react'
+import {Icon, Grid, Input} from 'semantic-ui-react'
 const {dialog} = require('electron').remote;
 
 class DownloadFolder extends Component {
@@ -25,17 +25,11 @@ class DownloadFolder extends Component {
     render() {
         return (
             <div>
-                <h3>Settings</h3>
-                <h4>Download path</h4>
                 <Grid columns='equal'>
                     <Grid.Row>
                         <Grid.Column>
-                            <input style={{
-                                color: 'black',
-                                backgroundColor: this.props.downloadPath.exists ? 'white' : 'red',
-                                width: '100%'
-                            }}
-                                   onChange={this.handleDirectoryInput} value={this.props.downloadPath.value}
+                            <Input label="path" fluid readOnly
+                                   value={this.props.path ? this.props.path : this.props.genericPath}
                                    type="text"/>
 
                         </Grid.Column>
@@ -52,8 +46,15 @@ class DownloadFolder extends Component {
 
 function Settings(props) {
     return (
-        <DownloadFolder onPathChange={props.onPathChange} downloadPath={props.downloadPath}/>
+        <div>
+            <h3>Settings</h3>
+            <h4>Download path</h4>
+            <DownloadFolder onPathChange={props.onPathChange} genericPath={props.genericPath} path={props.path}/>
+        </div>
     );
 }
 
-export default Settings;
+export {
+    Settings,
+    DownloadFolder
+}

@@ -1,8 +1,16 @@
 import React, {Component} from 'react';
-import {Progress, Form, Icon, Image, List, Popup, Modal} from 'semantic-ui-react'
+import {Progress, Input, Icon, Image, List, Popup, Modal, Grid} from 'semantic-ui-react'
+
+import {DownloadFolder} from '../settings/settings'
 
 import videoTools from '../../tools/videoTools/videoTools'
 const fs = require('fs');
+
+function Rename(props) {
+    return (
+        <Input fluid label="filename" value={props.filename} onChange={props.handleFilename}/>
+    );
+}
 
 class ItemSettings extends Component {
     constructor(props) {
@@ -11,11 +19,20 @@ class ItemSettings extends Component {
 
     render() {
         return (
-            <Modal trigger={<Icon link name='setting' size='large' color="black"/>}>
-                <Modal.Header>Item settings</Modal.Header>
+            <Modal size='small' trigger={<Icon link name='setting' size='large' color="black"/>}>
+                <Modal.Header style={{textAlign: 'center'}}>Item settings</Modal.Header>
                 <Modal.Content>
                     <Modal.Description>
-
+                        <Grid columns='equal'>
+                            <Grid.Column>
+                            </Grid.Column>
+                            <Grid.Column computer={8} tablet={10} mobile={16}>
+                                <Rename filename={this.props.filename} handleFilename={this.props.handleFilename}/>
+                                <DownloadFolder onPathChange={this.props.onPathChange} genericPath={this.props.genericPath} path={this.props.path}/>
+                            </Grid.Column>
+                            <Grid.Column>
+                            </Grid.Column>
+                        </Grid>
                     </Modal.Description>
                 </Modal.Content>
             </Modal>
@@ -60,12 +77,14 @@ function ProgressBar(props) {
 class InfoItem extends Component {
     constructor(props) {
         super(props);
-        this.state = {percent: '0'};
+        this.state = {percent: '0', filename: this.props.video.title, path: null};
 
         this.handleVideoDownload = this.handleVideoDownload.bind(this);
         this.onMp3Completion = this.onMp3Completion.bind(this);
         this.onGetPercentage = this.onGetPercentage.bind(this);
         this.handleVideoRemove = this.handleVideoRemove.bind(this);
+        this.handleFilename = this.handleFilename.bind(this);
+        this.onPathChange = this.onPathChange.bind(this);
     }
 
     handleVideoDownload() {
@@ -73,8 +92,9 @@ class InfoItem extends Component {
         if (!this.props.downloadPath.exists) return;
         console.log('run download');
         // Get paths
-        this.tempFilename = this.props.downloadPath.value + '/' + this.props.video.title + '.temp';
-        this.audioFilename = this.props.downloadPath.value + '/' + this.props.video.title + '.mp3';
+        let path = this.state.path ? this.state.path : this.props.downloadPath.value;
+        this.tempFilename = path + '/' + this.state.filename + '.temp';
+        this.audioFilename = path + '/' + this.state.filename + '.mp3';
 
         let onDownloadComplete = videoTools.convertToMp3(this.tempFilename, this.audioFilename, this.onGetPercentage, this.onMp3Completion);
 
@@ -94,6 +114,14 @@ class InfoItem extends Component {
         this.props.handleRemoveVideo(this.props.video.id);
     }
 
+    handleFilename(e) {
+        this.setState({filename: e.target.value});
+    }
+
+    onPathChange(path) {
+        this.setState({path: path});
+    }
+
     render() {
         if (this.props.video.loading)
             return (
@@ -107,14 +135,15 @@ class InfoItem extends Component {
                                   handleVideoDownload={this.handleVideoDownload}/>
                 </List.Content>
                 <List.Content floated='right'>
-                    <ItemSettings/>
+                    <ItemSettings filename={this.state.filename} handleFilename={this.handleFilename}
+                                  onPathChange={this.onPathChange} genericPath={this.props.downloadPath.value} path={this.state.path}/>
                 </List.Content>
                 <List.Content floated='right'>
                     <RemoveIcon handleVideoRemove={this.handleVideoRemove}/>
                 </List.Content>
                 <Image avatar src={this.props.video.thumbnail}/>
                 <List.Content>
-                    {this.props.video.title}
+                    {this.state.filename}
                 </List.Content>
                 <ProgressBar percent={this.state.percent}/>
             </List.Item>
