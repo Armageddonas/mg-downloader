@@ -19,7 +19,7 @@ class ItemSettings extends Component {
     }
 
     render() {
-        if(this.props.disabled === true) return <Icon name='setting' size='large' color="black" disabled/>;
+        if(this.props.disabled === true) return <Icon name='setting' size='large' color="black" className="animated fadeOut"/>;
 
         return (
             <Modal size='small' trigger={<Icon link name='setting' size='large' color="black" />}>
@@ -86,7 +86,7 @@ class FolderIcon extends Component {
         return (
             <Popup
                 trigger={
-                    <Icon link name='folder open' size='large' color="green"
+                    <Icon link name='folder open' size='large' color="orange" className="animated bounceIn"
                           onClick={this.launchFolder}/>
                 }
                 content='Open containing folder'
@@ -169,13 +169,13 @@ class InfoItem extends Component {
                     }
                 </List.Content>
                 <List.Content floated='right'>
+                    <RemoveIcon handleVideoRemove={this.handleVideoRemove}/>
+                </List.Content>
+                <List.Content floated='right'>
                     <ItemSettings filename={this.state.filename} handleFilename={this.handleFilename}
                                   onPathChange={this.onPathChange}
                                   directory={this.props.path || this.props.downloadPath.value}
                                   disabled={this.state.percent === 100}/>
-                </List.Content>
-                <List.Content floated='right'>
-                    <RemoveIcon handleVideoRemove={this.handleVideoRemove}/>
                 </List.Content>
                 <Image avatar src={this.props.video.thumbnail}/>
                 <List.Content>
