@@ -19,10 +19,11 @@ class ItemSettings extends Component {
     }
 
     render() {
-        if(this.props.disabled === true) return <Icon name='setting' size='large' color="black" className="animated fadeOut"/>;
+        if (this.props.disabled === true) return <Icon name='setting' size='large' color="black"
+                                                       className="animated fadeOut"/>;
 
         return (
-            <Modal size='small' trigger={<Icon link name='setting' size='large' color="black" />}>
+            <Modal size='small' trigger={<Icon link name='setting' size='large' color="black"/>}>
                 <Modal.Header style={{textAlign: 'center'}}>Item settings</Modal.Header>
                 <Modal.Content>
                     <Modal.Description>
@@ -44,18 +45,36 @@ class ItemSettings extends Component {
     }
 }
 
-function DownloadIcon(props) {
-    return (
-        <Popup
-            trigger={
-                <Icon name='download' size='large' color="blue"
-                      link={props.downloadPath.exists}
-                      disabled={!props.downloadPath.exists}
-                      onClick={props.handleVideoDownload}/>
-            }
-            content='Download'
-        />
-    );
+class DownloadIcon extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {clicked: false};
+
+        this.handleOnClick = this.handleOnClick.bind(this);
+    }
+
+    handleOnClick() {
+        if (this.state.clicked == true) return;
+        this.setState({clicked: true});
+
+        this.props.handleVideoDownload();
+    }
+
+    render() {
+        let enabled = this.props.downloadPath.exists && !this.state.clicked;
+
+        return (
+            <Popup
+                trigger={
+                    <Icon name='download' size='large' color="blue"
+                          link={enabled}
+                          disabled={!enabled}
+                          onClick={this.handleOnClick}/>
+                }
+                content='Download'
+            />
+        );
+    }
 }
 
 function RemoveIcon(props) {
@@ -86,7 +105,7 @@ class FolderIcon extends Component {
         return (
             <Popup
                 trigger={
-                    <Icon link name='folder open' size='large' color="orange" className="animated bounceIn"
+                    <Icon link name='folder open' size='large' color="blue" className="animated bounceIn"
                           onClick={this.launchFolder}/>
                 }
                 content='Open containing folder'
