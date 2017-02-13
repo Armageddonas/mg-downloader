@@ -172,9 +172,7 @@ class InfoItem extends Component {
 
     render() {
         if (this.props.video.loading)
-            return (
-                <p>loading...</p>
-            );
+            return null;
 
         return (
             <List.Item style={{textAlign: 'left'}}>
@@ -194,7 +192,7 @@ class InfoItem extends Component {
                     <ItemSettings filename={this.state.filename} handleFilename={this.handleFilename}
                                   onPathChange={this.onPathChange}
                                   directory={this.props.path || this.props.downloadPath.value}
-                                  disabled={this.state.percent === 100}/>
+                                  disabled={this.state.percent > 0}/>
                 </List.Content>
                 <Image avatar src={this.props.video.thumbnail}/>
                 <List.Content>

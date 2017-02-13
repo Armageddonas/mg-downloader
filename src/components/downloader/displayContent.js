@@ -20,16 +20,27 @@ function validateYouTubeUrl(ytUrl) {
 }
 
 function SearchVideo(props) {
+    if (props.searchState === 'searching')
+        return <Input fluid icon='user' loading={props.searchState === 'searching'} readOnly onChange={props.onChange}
+                      value={props.url}
+                      type="text"/>;
+    else if (props.searchState === 'found')
+        return <Input fluid icon="check" color="green" onChange={props.onChange} value={props.url}
+                      type="text"/>;
+    else if (props.searchState === 'error')
+        return <Input fluid icon="warning circle" color="red" onChange={props.onChange}
+                      value={props.url} type="text"/>;
+
     return (
-        <Input fluid onChange={props.onChange} value={props.url} type="text"/>
+        <Input fluid onChange={props.onChange} value={props.url} type="text" placeholder="Enter youtube url"/>
     );
 }
 
 class DisplayContent extends Component {
     constructor(props) {
         super(props);
-        this.state = {url: '', videos: [], stateVideo: ''};
-        // this.state = {url: 'https://www.youtube.com/watch?v=90AiXO1pAiA', videos: [], stateVideo: ''};
+        this.state = {url: '', videos: [], searchState: null};
+        // this.state = {url: 'https://www.youtube.com/watch?v=90AiXO1pAiA', videos: [], searchState: null};
         // setTimeout(() => {
         //     this.handleUrlSearch({target: {value: this.state.url}});
         // }, 100);
@@ -47,13 +58,17 @@ class DisplayContent extends Component {
         this.setState({url: videoUrl});
 
         // Check if url is valid and if it already exists in the list
-        if (!validateYouTubeUrl(videoUrl) || findUniqueObjectPos(this.state.videos, 'url', videoUrl) > -1) return;
+        if (!validateYouTubeUrl(videoUrl) || findUniqueObjectPos(this.state.videos, 'url', videoUrl) > -1) {
+            this.setState({searchState: 'error'});
+            return;
+        }
 
         // Set info to loading
         let info = {};
         info.loading = true;
         info.url = videoUrl;
         this.setState({videos: this.state.videos.concat([info])});
+        this.setState({searchState: 'searching'});
 
         videoTools.getInfo(videoUrl, this.onInfoFound, this.onInfoError);
     }
@@ -61,14 +76,13 @@ class DisplayContent extends Component {
     onInfoFound(videoInfo) {
         let index = findUniqueObjectPos(this.state.videos, 'url', videoInfo.url);
         this.state.videos.splice(index, 1, videoInfo);
-        this.setState({videos: this.state.videos});
+        this.setState({videos: this.state.videos, searchState: 'found', url: ''});
     }
 
     onInfoError(url) {
         let index = findUniqueObjectPos(this.state.videos, 'url', url);
         this.state.videos.splice(index, 1);
-        this.setState({videos: this.state.videos});
-        // todo: add toast
+        this.setState({videos: this.state.videos, searchState: 'error'});
     }
 
     handleRemoveVideo(id) {
@@ -81,10 +95,11 @@ class DisplayContent extends Component {
     render() {
         return (
             <div>
-                <SearchVideo onChange={this.handleUrlSearch} url={this.state.url}/>
+                <SearchVideo onChange={this.handleUrlSearch} url={this.state.url} searchState={this.state.searchState}/>
                 <br/>
                 <br/>
-                <Info videos={this.state.videos} handleRemoveVideo={this.handleRemoveVideo} downloadPath={this.props.downloadPath}/>
+                <Info videos={this.state.videos} handleRemoveVideo={this.handleRemoveVideo}
+                      downloadPath={this.props.downloadPath}/>
             </div>
         );
     }
