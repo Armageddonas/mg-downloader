@@ -57,12 +57,14 @@ class videoTools {
 
         // Functions is used as a callback
         return function () {
+            // Load video file
+            let proc = FfmpegCommand(videoFilename);
+
             // Load ffmpeg binary
             if (os.platform() === 'win32') proc.setFfmpegPath(__dirname + '\\ffmpeg');
 
-            // Load video file
-            FfmpegCommand(videoFilename)
-                .output(audioFilename)
+            // Convert to mp3
+            proc.saveToFile(audioFilename)
                 .on('progress', function (progress) {
                     // Scale to 10%. Also adds 90 because downloading percentage stops at 90%
                     let percent = 90 + progress.percent * 0.1;
@@ -72,8 +74,7 @@ class videoTools {
                         console.log("converted mp3");
                         onCompletion();
                     }
-                )
-                .run();
+                );
         }
     }
 
