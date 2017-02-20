@@ -19,35 +19,15 @@ function validateYouTubeUrl(ytUrl) {
     }
 }
 
-function SearchVideo(props) {
-    if (props.searchState === 'searching')
-        return <Input fluid icon='user' loading={props.searchState === 'searching'} readOnly onChange={props.onChange}
-                      value={props.url}
-                      type="text"/>;
-    else if (props.searchState === 'found')
-        return <Input fluid icon="check" color="green" onChange={props.onChange} value={props.url}
-                      type="text"/>;
-    else if (props.searchState === 'error')
-        return <Input fluid icon="warning circle" color="red" onChange={props.onChange}
-                      value={props.url} type="text"/>;
-
-    return (
-        <Input fluid onChange={props.onChange} value={props.url} type="text" placeholder="Enter youtube url"/>
-    );
-}
-
-class DisplayContent extends Component {
+class SearchVideo extends Component {
     constructor(props) {
         super(props);
-        this.state = {url: '', videos: [], searchState: null};
-        // this.state = {url: 'https://www.youtube.com/watch?v=90AiXO1pAiA', videos: [], searchState: null};
+        this.state = {url: '', searchState: null};
         // setTimeout(() => {
-        //     this.handleUrlSearch({target: {value: this.state.url}});
+        //     this.handleUrlSearch({target: {value: 'https://www.youtube.com/watch?v=90AiXO1pAiA'}});
         // }, 100);
 
-
         this.handleUrlSearch = this.handleUrlSearch.bind(this);
-        this.handleRemoveVideo = this.handleRemoveVideo.bind(this);
         this.onInfoFound = this.onInfoFound.bind(this);
         this.onInfoError = this.onInfoError.bind(this);
     }
@@ -58,31 +38,76 @@ class DisplayContent extends Component {
         this.setState({url: videoUrl});
 
         // Check if url is valid and if it already exists in the list
-        if (!validateYouTubeUrl(videoUrl) || findUniqueObjectPos(this.state.videos, 'url', videoUrl) > -1) {
+        if (!validateYouTubeUrl(videoUrl) || findUniqueObjectPos(this.props.videos, 'url', videoUrl) > -1) {
             this.setState({searchState: 'error'});
             return;
         }
 
         // Set info to loading
-        let info = {};
-        info.loading = true;
-        info.url = videoUrl;
-        this.setState({videos: this.state.videos.concat([info])});
+        this.props.onVideoLoading(videoUrl);
         this.setState({searchState: 'searching'});
 
         videoTools.getInfo(videoUrl, this.onInfoFound, this.onInfoError);
     }
 
+    onInfoFound(videoInfo){
+        this.setState({searchState: 'found', url: ''});
+        this.props.onInfoFound(videoInfo);
+    }
+
+    onInfoError(url) {
+        this.setState({searchState: 'error'});
+        this.props.onInfoError(url);
+    }
+
+    render() {
+        if (this.state.searchState === 'searching')
+            return <Input fluid icon='user' loading={this.state.searchState === 'searching'} readOnly
+                          onChange={this.handleUrlSearch}
+                          value={this.state.url}
+                          type="text"/>;
+        else if (this.state.searchState === 'found')
+            return <Input fluid icon="check" color="green" onChange={this.handleUrlSearch} value={this.state.url}
+                          type="text"/>;
+        else if (this.state.searchState === 'error')
+            return <Input fluid icon="warning circle" color="red" onChange={this.handleUrlSearch}
+                          value={this.state.url} type="text"/>;
+
+        return (
+            <Input fluid onChange={this.handleUrlSearch} value={this.state.url} type="text"
+                   placeholder="Enter youtube url"/>
+        );
+    }
+}
+
+class DisplayContent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {videos: []};
+
+        this.handleRemoveVideo = this.handleRemoveVideo.bind(this);
+        this.onInfoFound = this.onInfoFound.bind(this);
+        this.onInfoError = this.onInfoError.bind(this);
+        this.onVideoLoading = this.onVideoLoading.bind(this);
+    }
+
+    onVideoLoading(videoUrl) {
+        let info = {};
+        info.loading = true;
+        info.url = videoUrl;
+        this.setState({videos: this.state.videos.concat([info])});
+    }
+
     onInfoFound(videoInfo) {
         let index = findUniqueObjectPos(this.state.videos, 'url', videoInfo.url);
         this.state.videos.splice(index, 1, videoInfo);
-        this.setState({videos: this.state.videos, searchState: 'found', url: ''});
+        this.setState({videos: this.state.videos});
     }
 
     onInfoError(url) {
         let index = findUniqueObjectPos(this.state.videos, 'url', url);
         this.state.videos.splice(index, 1);
-        this.setState({videos: this.state.videos, searchState: 'error'});
+        this.setState({videos: this.state.videos});
     }
 
     handleRemoveVideo(id) {
@@ -95,7 +120,8 @@ class DisplayContent extends Component {
     render() {
         return (
             <div>
-                <SearchVideo onChange={this.handleUrlSearch} url={this.state.url} searchState={this.state.searchState}/>
+                <SearchVideo onInfoFound={this.onInfoFound} onInfoError={this.onInfoError}
+                             onVideoLoading={this.onVideoLoading} url={this.state.url} videos={this.state.videos}/>
                 <br/>
                 <br/>
                 <Info videos={this.state.videos} handleRemoveVideo={this.handleRemoveVideo}

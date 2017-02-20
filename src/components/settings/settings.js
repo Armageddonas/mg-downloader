@@ -7,7 +7,6 @@ class DirectoryPicker extends Component {
         super(props);
 
         this.handleDirectoryChooser = this.handleDirectoryChooser.bind(this);
-        this.handleDirectoryInput = this.handleDirectoryInput.bind(this);
     }
 
     handleDirectoryChooser() {
@@ -16,10 +15,6 @@ class DirectoryPicker extends Component {
         });
 
         if (pathArray) this.props.onPathChange(pathArray[0]);
-    }
-
-    handleDirectoryInput(e) {
-        this.props.onPathChange(e.target.value);
     }
 
     render() {

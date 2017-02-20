@@ -7,10 +7,22 @@ import videoTools from '../../tools/videoTools/videoTools'
 const fs = require('fs');
 const {shell} = require('electron');
 
-function Rename(props) {
-    return (
-        <Input fluid label="filename" value={props.filename} onChange={props.handleFilename}/>
-    );
+class Rename extends Component {
+    constructor(props) {
+        super(props);
+
+        this.handleInput = this.handleInput.bind(this);
+    }
+
+    handleInput(e) {
+        this.props.handleFilename(e.target.value);
+    }
+
+    render() {
+        return (
+            <Input fluid label="filename" value={this.props.filename} onChange={this.handleInput}/>
+        );
+    }
 }
 
 class ItemSettings extends Component {
@@ -19,7 +31,8 @@ class ItemSettings extends Component {
     }
 
     render() {
-        if (this.props.disabled === true) return <Icon name='setting' size='large' color="black"
+        if (this.props.disabled === true)
+            return <Icon name='setting' size='large' color="black"
                                                        className="animated fadeOut"/>;
 
         return (
@@ -97,7 +110,6 @@ class FolderIcon extends Component {
     }
 
     launchFolder() {
-        console.log(this.props.filepath);
         shell.showItemInFolder(this.props.filepath);
     }
 
@@ -162,8 +174,8 @@ class InfoItem extends Component {
         this.props.handleRemoveVideo(this.props.video.id);
     }
 
-    handleFilename(e) {
-        this.setState({filename: e.target.value});
+    handleFilename(value) {
+        this.setState({filename: value});
     }
 
     onPathChange(path) {
@@ -191,7 +203,7 @@ class InfoItem extends Component {
                 <List.Content floated='right'>
                     <ItemSettings filename={this.state.filename} handleFilename={this.handleFilename}
                                   onPathChange={this.onPathChange}
-                                  directory={this.props.path || this.props.downloadPath.value}
+                                  directory={this.state.path || this.props.downloadPath.value}
                                   disabled={this.state.percent > 0}/>
                 </List.Content>
                 <Image avatar src={this.props.video.thumbnail}/>
