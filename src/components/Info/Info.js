@@ -137,7 +137,7 @@ function ProgressBar(props) {
 class InfoItem extends Component {
     constructor(props) {
         super(props);
-        this.state = {percent: 0, filename: this.props.video.title, path: null};
+        this.state = {percent: 0, filename: this.props.video.title, path: null, downloadPressed: false};
 
         this.handleVideoDownload = this.handleVideoDownload.bind(this);
         this.onMp3Completion = this.onMp3Completion.bind(this);
@@ -151,6 +151,8 @@ class InfoItem extends Component {
         // Disable download if folder doesn't exists
         if (!this.props.downloadPath.exists) return;
         console.log('run download');
+
+        this.setState({downloadPressed: true});
         // Get paths
         let path = this.state.path || this.props.downloadPath.value;
         this.tempFilepath = path + '/' + this.state.filename + '.temp';
@@ -204,7 +206,7 @@ class InfoItem extends Component {
                     <ItemSettings filename={this.state.filename} handleFilename={this.handleFilename}
                                   onPathChange={this.onPathChange}
                                   directory={this.state.path || this.props.downloadPath.value}
-                                  disabled={this.state.percent > 0}/>
+                                  disabled={this.state.downloadPressed}/>
                 </List.Content>
                 <Image avatar src={this.props.video.thumbnail}/>
                 <List.Content>
