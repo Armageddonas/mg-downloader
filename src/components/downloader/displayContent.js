@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Input} from 'semantic-ui-react'
 
-import Info from '../Info/Info'
+import InfoList from '../Info/Info'
 import videoTools from '../../tools/videoTools/videoTools'
 import {findUniqueObjectPos} from '../../tools/utilities/arrayUtilities'
 
@@ -10,12 +10,7 @@ function validateYouTubeUrl(ytUrl) {
     if (url != undefined || url != '') {
         let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
         let match = url.match(regExp);
-        if (match && match[2].length == 11) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return (match && match[2].length == 11);
     }
 }
 
@@ -124,7 +119,7 @@ class DisplayContent extends Component {
                              onVideoLoading={this.onVideoLoading} url={this.state.url} videos={this.state.videos}/>
                 <br/>
                 <br/>
-                <Info videos={this.state.videos} handleRemoveVideo={this.handleRemoveVideo}
+                <InfoList videos={this.state.videos} handleRemoveVideo={this.handleRemoveVideo}
                       downloadPath={this.props.downloadPath}/>
             </div>
         );

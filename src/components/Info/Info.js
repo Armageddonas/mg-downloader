@@ -233,17 +233,4 @@ function InfoList(props) {
     );
 }
 
-function Info(props) {
-    if (props.videos.size == 0)
-        return <h2>Info</h2>;
-
-    return (
-        <div>
-            <InfoList videos={props.videos}
-                      downloadPath={props.downloadPath}
-                      handleRemoveVideo={props.handleRemoveVideo}/>
-        </div>
-    );
-}
-
-export default Info;
+export default InfoList;
