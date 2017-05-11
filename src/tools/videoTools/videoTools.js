@@ -1,7 +1,7 @@
-var youtubedl = require('youtube-dl');
-var FfmpegCommand = require('fluent-ffmpeg');
+let youtubedl = require('youtube-dl');
+let FfmpegCommand = require('fluent-ffmpeg');
 const os = require('os');
-var fs = require('fs');
+let fs = require('fs');
 
 
 class videoTools {
@@ -81,7 +81,7 @@ class videoTools {
     static getInfo(videoUrl, onInfoFound, onError) {
         // Get video info
         console.log('Fetching video info');
-        youtubedl.getInfo(videoUrl, [], function (err, info) {
+        youtubedl.getInfo(videoUrl, [], {}, function (err, info) {
             if (err) {
                 onError(videoUrl);
                 throw err;

@@ -6,7 +6,7 @@ class fileManager {
         let saveDir = os.homedir() + '/Downloads/';
 
         let downloadPathLS = JSON.parse(localStorage.getItem('downloadPath'));
-        let downloadPath = downloadPathLS != null ? downloadPathLS : saveDir;
+        let downloadPath = downloadPathLS !== null ? downloadPathLS : saveDir;
 
         if (!fs.existsSync(downloadPath)) return {value: downloadPath, exists: false};
 

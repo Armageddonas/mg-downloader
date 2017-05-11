@@ -6,6 +6,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
+    "postInstallLinux": "sudo chmod 755 ./node_modules/youtube-dl/bin/youtube-dl",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "lint": "eslint src"

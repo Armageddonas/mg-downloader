@@ -67,7 +67,7 @@ class DownloadIcon extends Component {
     }
 
     handleOnClick() {
-        if (this.state.clicked == true) return;
+        if (this.state.clicked === true) return;
         this.setState({clicked: true});
 
         this.props.handleVideoDownload();
@@ -130,7 +130,7 @@ function ProgressBar(props) {
     return (
         <Progress progress color='green'
                   percent={props.percent}
-                  indicating={(props.percent != 0) && (props.percent != 100)}/>
+                  indicating={(props.percent !== 0) && (props.percent !== 100)}/>
     );
 }
 
