@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import {Input} from 'semantic-ui-react'
 
-import InfoList from '../Info/Info'
+import InfoList from '../Info/infoList'
 import videoTools from '../../tools/videoTools/videoTools'
 import {findUniqueObjectPos} from '../../tools/utilities/arrayUtilities'
 
 function validateYouTubeUrl(ytUrl) {
     let url = ytUrl;
     if (url !== undefined || url !== '') {
-        let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+        let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|\?v=)([^#&?]*).*/;
         let match = url.match(regExp);
         return (match && match[2].length === 11);
     }
