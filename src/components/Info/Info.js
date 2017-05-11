@@ -33,7 +33,7 @@ class ItemSettings extends Component {
     render() {
         if (this.props.disabled === true)
             return <Icon name='setting' size='large' color="black"
-                                                       className="animated fadeOut"/>;
+                         className="animated fadeOut"/>;
 
         return (
             <Modal size='small' trigger={<Icon link name='setting' size='large' color="black"/>}>
@@ -128,7 +128,7 @@ class FolderIcon extends Component {
 
 function ProgressBar(props) {
     return (
-        <Progress progress color='green'
+        <Progress progress color={props.percent === 100 ? 'green' : 'blue'}
                   percent={props.percent}
                   indicating={(props.percent !== 0) && (props.percent !== 100)}/>
     );
@@ -155,8 +155,8 @@ class InfoItem extends Component {
         this.setState({downloadPressed: true});
         // Get paths
         let path = this.state.path || this.props.downloadPath.value;
-        this.tempFilepath = path + '/' + this.state.filename + '.temp';
-        this.audioFilepath = path + '/' + this.state.filename + '.mp3';
+        this.tempFilepath = path + '/' + this.state.filename.replace(/[!@#$%^&*\/\\]/g, '') + '.temp';
+        this.audioFilepath = path + '/' + this.state.filename.replace(/[!@#$%^&*\/\\]/g, '') + '.mp3';
 
         let onDownloadComplete = videoTools.convertToMp3(this.tempFilepath, this.audioFilepath, this.onGetPercentage, this.onMp3Completion);
 
