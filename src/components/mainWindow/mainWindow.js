@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Sidebar, Segment, Grid, Menu, Header, Icon, Message} from 'semantic-ui-react'
 
 import DisplayContent from '../downloader/displayContent'
-import {Settings} from '../settings/settings'
+import NavContent from './navContent'
 import fileManager from '../../tools/fileManager/fileManager'
 
 
@@ -40,7 +40,7 @@ class MainWindow extends Component {
                     inverted
                 >
                     <Menu.Item name='path'>
-                        <Settings onPathChange={this.handleDownloadFolder} downloadFolder={this.state.downloadPath.value}/>
+                        <NavContent onPathChange={this.handleDownloadFolder} downloadFolder={this.state.downloadPath.value}/>
                     </Menu.Item>
                     <Menu.Item name='back'>
                         <Icon onClick={this.toggleVisibility} link name='left arrow'/>

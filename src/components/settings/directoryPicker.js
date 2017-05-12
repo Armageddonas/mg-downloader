@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Icon, Grid, Input} from 'semantic-ui-react'
 const {dialog} = require('electron').remote;
 
-class DirectoryPicker extends Component {
+export default class DirectoryPicker extends Component {
     constructor(props) {
         super(props);
 
@@ -37,19 +37,4 @@ class DirectoryPicker extends Component {
             </div>
         );
     }
-}
-
-function Settings(props) {
-    return (
-        <div>
-            <h3>Settings</h3>
-            <h4>Download path</h4>
-            <DirectoryPicker onPathChange={props.onPathChange} directory={props.downloadFolder}/>
-        </div>
-    );
-}
-
-export {
-    Settings,
-    DirectoryPicker
 }
