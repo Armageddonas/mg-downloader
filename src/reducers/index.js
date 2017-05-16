@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux'
-import {REQUEST_VIDEO_INFO, RECEIVE_VIDEO_INFO, INVALID_SEARCH, SET_SEARCH_URL, REMOVE_VIDEO} from '../actions'
+import {REQUEST_VIDEO_INFO, RECEIVE_VIDEO_INFO, INVALID_SEARCH, SET_SEARCH_URL, REMOVE_VIDEO, SearchStates} from '../actions'
 import {findUniqueObjectPos} from "../tools/utilities/arrayUtilities";
 
 function videoList(state = {search: {state: null, url: ''}, videos: []}, action) {
@@ -12,7 +12,7 @@ function videoList(state = {search: {state: null, url: ''}, videos: []}, action)
             // Change search state
             nextState = {};
             nextState.search = Object.assign({}, state.search);
-            nextState.search.state = 'error';
+            nextState.search.state = SearchStates.ERROR;
 
             return Object.assign({}, state, nextState);
         case REMOVE_VIDEO:
@@ -38,7 +38,7 @@ function videoRequests(state, type, info) {
             // Change search state
             nextState = {};
             nextState.search = Object.assign({}, state.search);
-            nextState.search.state = 'searching';
+            nextState.search.state = SearchStates.SEARCHING;
 
             return Object.assign({}, state, nextState);
         case RECEIVE_VIDEO_INFO:
@@ -60,7 +60,7 @@ function videoRequests(state, type, info) {
 
             // Change search state and clean url
             nextState.search = Object.assign({}, state.search);
-            nextState.search.state = 'found';
+            nextState.search.state = SearchStates.FOUND;
             nextState.search.url = '';
 
             return Object.assign({}, state, nextState);

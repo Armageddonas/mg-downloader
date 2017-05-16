@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import {requestVideoInfo, removeVideo} from '../../actions/index'
+import {requestVideoInfo, removeVideo} from '../../actions'
 import DisplayContent from '../../components/downloader/displayContent'
 
 const mapStateToProps = (state) => {

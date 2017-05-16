@@ -8,6 +8,27 @@ export const INVALID_SEARCH = 'INVALID_SEARCH';
 export const SET_SEARCH_URL = 'SET_SEARCH_URL';
 export const REMOVE_VIDEO = 'REMOVE_VIDEO';
 
+export const SearchStates = {
+    SEARCHING: 'SEARCHING',
+    FOUND: 'FOUND',
+    ERROR: 'ERROR'
+};
+
+// Search functions
+export function invalidSearch() {
+    return {
+        type: INVALID_SEARCH
+    }
+}
+
+export function setSearchUrl(url) {
+    return {
+        type: SET_SEARCH_URL,
+        url
+    }
+}
+
+// Video functions
 export function requestVideoInfo() {
     return {
         type: REQUEST_VIDEO_INFO
@@ -25,19 +46,6 @@ export function removeVideo(id) {
     return {
         type: REMOVE_VIDEO,
         id
-    }
-}
-
-export function invalidSearch() {
-    return {
-        type: INVALID_SEARCH
-    }
-}
-
-export function setSearchUrl(url) {
-    return {
-        type: SET_SEARCH_URL,
-        url
     }
 }
 

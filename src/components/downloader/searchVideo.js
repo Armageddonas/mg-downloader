@@ -10,6 +10,7 @@ export default class SearchVideo extends Component {
     handleUrlSearch(e) {
         // Get url from input
         let videoUrl = e.target.value;
+        if(this.props.search.state === this.props.SearchStates.SEARCHING) return;
 
         this.props.handleInputUrl(videoUrl);
         this.props.requestVideoInfo(videoUrl);
@@ -19,26 +20,27 @@ export default class SearchVideo extends Component {
         let handleSearch = this.handleUrlSearch;
         let searchUrl = this.props.search.url || '';
         let searchState = this.props.search.state;
+        let StateList = this.props.SearchStates;
 
         let searchIcon = null;
         let searching = false;
 
         switch (searchState) {
-            case 'searching':
+            case StateList.SEARCHING:
                 searchIcon = <Icon name="user"/>;
                 searching = true;
                 break;
-            case 'found':
+            case StateList.FOUND:
                 searchIcon = <Icon name="check" color="green"/>;
                 break;
-            case 'error':
+            case StateList.ERROR:
                 searchIcon = <Icon name="warning circle" color="red"/>;
                 break;
         }
 
         return (
             <Input icon={searchIcon}
-                   loading={searching} readOnly={searching}
+                   loading={searching}
                    placeholder="Enter youtube url"
                    onChange={handleSearch}
                    value={searchUrl}
