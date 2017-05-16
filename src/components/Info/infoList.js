@@ -1,14 +1,13 @@
 import React from 'react';
 import {List} from 'semantic-ui-react'
 
-import InfoItem from "./infoItem";
+import InfoItem from '../../containers/info/infoItem';
 
-const InfoList = ({videos, downloadPath, handleRemoveVideo}) => {
+const InfoList = ({videos, downloadPath}) => {
     const listItems = videos.map((video) =>
         <InfoItem key={video.id || video.url}
                   video={video}
-                  downloadPath={downloadPath}
-                  handleRemoveVideo={handleRemoveVideo}/>);
+                  downloadPath={downloadPath}/>);
 
     return (
         <List divided ordered size="large">
