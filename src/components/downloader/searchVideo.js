@@ -11,8 +11,8 @@ export default class SearchVideo extends Component {
     handleUrlSearch(e) {
         // Get url from input
         let videoUrl = e.target.value;
-        this.props.handleInputUrl(videoUrl);
 
+        this.props.handleInputUrl(videoUrl);
         this.props.requestVideoInfo(videoUrl);
     };
 
@@ -23,20 +23,26 @@ export default class SearchVideo extends Component {
 
         switch (searchState) {
             case 'searching':
-                return <Input fluid icon='user' loading={searchState === 'searching'} readOnly
+                return <Input icon='user' loading readOnly
                               onChange={handleSearch}
                               value={searchUrl}
-                              type="text"/>;
+                              fluid type="text"/>;
             case 'found':
-                return <Input fluid icon="check" color="green" onChange={handleSearch} value={searchUrl}
-                              type="text"/>;
+                return <Input icon="check" color="green"
+                              onChange={handleSearch}
+                              value={searchUrl}
+                              fluid type="text"/>;
             case 'error':
-                return <Input fluid icon="warning circle" color="red" onChange={handleSearch}
-                              value={searchUrl} type="text"/>;
+                return <Input icon="warning circle" color="red"
+                              onChange={handleSearch}
+                              value={searchUrl}
+                              fluid type="text"/>;
             default:
                 return (
-                    <Input fluid onChange={handleSearch} value={searchUrl} type="text"
-                           placeholder="Enter youtube url"/>
+                    <Input placeholder="Enter youtube url"
+                           onChange={handleSearch}
+                           value={searchUrl}
+                           fluid type="text"/>
                 );
         }
     }

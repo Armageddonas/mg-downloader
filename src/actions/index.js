@@ -4,7 +4,7 @@ import {findUniqueObjectPos} from "../tools/utilities/arrayUtilities";
 
 export const REQUEST_VIDEO_INFO = 'REQUEST_VIDEO_INFO';
 export const RECEIVE_VIDEO_INFO = 'RECEIVE_VIDEO_INFO';
-export const CANCEL_SEARCH = 'CANCEL_SEARCH';
+export const INVALID_SEARCH = 'INVALID_SEARCH';
 export const SET_SEARCH_URL = 'SET_SEARCH_URL';
 
 export function requestVideoInfo(url) {
@@ -21,9 +21,9 @@ export function receiveVideoInfo(info) {
     }
 }
 
-export function cancelSearch() {
+export function invalidSearch() {
     return {
-        type: CANCEL_SEARCH
+        type: INVALID_SEARCH
     }
 }
 
@@ -34,23 +34,16 @@ export function setSearchUrl(url) {
     }
 }
 
-
-
 export function fetchVideoInfo(videoUrl) {
     return (dispatch, getState) => {
 
+        let searchUrl = getState().videoList.search.url;
+        let videos = getState().videoList.videos;
+
         // Check if url is valid and if it already exists in the list
-        if (getState.url &&
-            (!validateYouTubeUrl(getState.url) || findUniqueObjectPos(state.videos, 'url', getState.url) > -1)
-        ) {
-            dispatch(cancelSearch());
-
-            let nextState = {};
-            nextState['search'] = {
-                state: 'error'
-            };
-
-            return Object.assign({}, state, nextState);
+        if ((!validateYouTubeUrl(searchUrl) || findUniqueObjectPos(videos, 'url', searchUrl) > -1)) {
+            dispatch(invalidSearch());
+            return;
         }
 
         dispatch(requestVideoInfo(videoUrl));

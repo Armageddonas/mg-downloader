@@ -1,20 +1,7 @@
 import {combineReducers} from 'redux'
-import {REQUEST_VIDEO_INFO, RECEIVE_VIDEO_INFO, CANCEL_SEARCH, SET_SEARCH_URL} from '../actions'
-import {findUniqueObjectPos} from '../tools/utilities/arrayUtilities';
-import {validateYouTubeUrl} from '../tools/utilities/validators';
+import {REQUEST_VIDEO_INFO, RECEIVE_VIDEO_INFO, INVALID_SEARCH, SET_SEARCH_URL} from '../actions'
 
 function videoList(state = {search: {state: null, url: ''}, videos: []}, action) {
-    // Check if url is valid and if it already exists in the list
-    if (action.url &&
-        (!validateYouTubeUrl(action.url) || findUniqueObjectPos(state.videos, 'url', action.url) > -1)
-    ) {
-        let nextState = {};
-        nextState['search'] = {
-            state: 'error'
-        };
-
-        return Object.assign({}, state, nextState);
-    }
 
     switch (action.type) {
         case SET_SEARCH_URL:
@@ -22,7 +9,12 @@ function videoList(state = {search: {state: null, url: ''}, videos: []}, action)
         case REQUEST_VIDEO_INFO:
         case RECEIVE_VIDEO_INFO:
             return videoRequests(state, action.type, action.info);
-        case CANCEL_SEARCH:
+        case INVALID_SEARCH:
+            let nextState = {};
+            nextState.search = Object.assign({}, state.search);
+            nextState.search.state = 'error';
+
+            return Object.assign({}, state, nextState);
         default:
             return state;
     }
