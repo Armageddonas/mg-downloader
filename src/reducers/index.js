@@ -1,16 +1,25 @@
 import {combineReducers} from 'redux'
-import {REQUEST_VIDEO_INFO, RECEIVE_VIDEO_INFO, INVALID_SEARCH, SET_SEARCH_URL} from '../actions'
+import {REQUEST_VIDEO_INFO, RECEIVE_VIDEO_INFO, INVALID_SEARCH, SET_SEARCH_URL, REMOVE_VIDEO} from '../actions'
+import {findUniqueObjectPos} from "../tools/utilities/arrayUtilities";
 
 function videoList(state = {search: {state: null, url: ''}, videos: []}, action) {
+    let nextState;
 
     switch (action.type) {
         case SET_SEARCH_URL:
             return Object.assign({}, state, {search: {url: action.url}});
         case INVALID_SEARCH:
             // Change search state
-            let nextState = {};
+            nextState = {};
             nextState.search = Object.assign({}, state.search);
             nextState.search.state = 'error';
+
+            return Object.assign({}, state, nextState);
+        case REMOVE_VIDEO:
+            nextState = {};
+            nextState.videos = state.videos.slice();
+            let index = findUniqueObjectPos(nextState.videos, 'id', action.id);
+            nextState.videos.splice(index, 1);
 
             return Object.assign({}, state, nextState);
         case REQUEST_VIDEO_INFO:

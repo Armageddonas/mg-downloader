@@ -4,7 +4,6 @@ import {Input, Icon} from 'semantic-ui-react'
 export default class SearchVideo extends Component {
     constructor(props) {
         super(props);
-
         this.handleUrlSearch = this.handleUrlSearch.bind(this);
     }
 

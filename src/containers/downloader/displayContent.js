@@ -1,5 +1,5 @@
-import { connect } from 'react-redux'
-import { requestVideoInfo } from '../../actions/index'
+import {connect} from 'react-redux'
+import {requestVideoInfo, removeVideo} from '../../actions/index'
 import DisplayContent from '../../components/downloader/displayContent'
 
 const mapStateToProps = (state) => {
@@ -11,6 +11,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         handleUrlSearch: (url) => {
             dispatch(requestVideoInfo(url))
+        },
+        handleRemoveVideo: (id) => {
+            dispatch(removeVideo(id))
         }
     }
 };

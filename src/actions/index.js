@@ -6,6 +6,7 @@ export const REQUEST_VIDEO_INFO = 'REQUEST_VIDEO_INFO';
 export const RECEIVE_VIDEO_INFO = 'RECEIVE_VIDEO_INFO';
 export const INVALID_SEARCH = 'INVALID_SEARCH';
 export const SET_SEARCH_URL = 'SET_SEARCH_URL';
+export const REMOVE_VIDEO = 'REMOVE_VIDEO';
 
 export function requestVideoInfo() {
     return {
@@ -17,6 +18,13 @@ export function receiveVideoInfo(info) {
     return {
         type: RECEIVE_VIDEO_INFO,
         info
+    }
+}
+
+export function removeVideo(id) {
+    return {
+        type: REMOVE_VIDEO,
+        id
     }
 }
 

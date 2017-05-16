@@ -22,10 +22,10 @@ class DisplayContent extends Component {
     render() {
         return (
             <div>
-                <SearchVideo url={this.state.url} videos={this.state.videos}/>
+                <SearchVideo videos={this.state.videos}/>
                 <br/>
                 <br/>
-                <InfoList videos={this.props.videos} handleRemoveVideo={this.handleRemoveVideo}
+                <InfoList videos={this.props.videos} handleRemoveVideo={this.props.handleRemoveVideo}
                       downloadPath={this.props.downloadPath}/>
             </div>
         );
