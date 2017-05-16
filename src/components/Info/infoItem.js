@@ -19,7 +19,6 @@ export default class InfoItem extends Component {
         this.handleVideoDownload = this.handleVideoDownload.bind(this);
         this.onMp3Completion = this.onMp3Completion.bind(this);
         this.onGetPercentage = this.onGetPercentage.bind(this);
-        this.handleVideoRemove = this.handleVideoRemove.bind(this);
         this.handleFilename = this.handleFilename.bind(this);
         this.onPathChange = this.onPathChange.bind(this);
     }
@@ -27,7 +26,7 @@ export default class InfoItem extends Component {
     handleVideoDownload() {
         // Disable download if folder doesn't exists
         if (!this.props.downloadPath.exists) return;
-        console.log('run download');
+        console.log('run download...');
 
         this.setState({downloadPressed: true});
         // Get paths
@@ -49,10 +48,6 @@ export default class InfoItem extends Component {
 
     onGetPercentage(percentage) {
         this.setState({percent: percentage.toFixed(0)});
-    }
-
-    handleVideoRemove() {
-        this.props.handleRemoveVideo(this.props.video.id);
     }
 
     handleFilename(value) {
@@ -79,7 +74,7 @@ export default class InfoItem extends Component {
                     }
                 </List.Content>
                 <List.Content floated='right'>
-                    <RemoveIcon handleVideoRemove={this.handleVideoRemove}/>
+                    <RemoveIcon handleVideoRemove={() => this.props.handleRemoveVideo(this.props.video.id)}/>
                 </List.Content>
                 <List.Content floated='right'>
                     <ItemSettings filename={this.state.filename} handleFilename={this.handleFilename}
