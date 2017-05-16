@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Input} from 'semantic-ui-react'
+import {Input, Icon} from 'semantic-ui-react'
 
 export default class SearchVideo extends Component {
     constructor(props) {
@@ -18,32 +18,32 @@ export default class SearchVideo extends Component {
 
     render() {
         let handleSearch = this.handleUrlSearch;
-        let searchUrl = this.props.search.url;
+        let searchUrl = this.props.search.url || '';
         let searchState = this.props.search.state;
+
+        let searchIcon = null;
+        let searching = false;
 
         switch (searchState) {
             case 'searching':
-                return <Input icon='user' loading readOnly
-                              onChange={handleSearch}
-                              value={searchUrl}
-                              fluid type="text"/>;
+                searchIcon = <Icon name="user"/>;
+                searching = true;
+                break;
             case 'found':
-                return <Input icon="check" color="green"
-                              onChange={handleSearch}
-                              value={searchUrl}
-                              fluid type="text"/>;
+                searchIcon = <Icon name="check" color="green"/>;
+                break;
             case 'error':
-                return <Input icon="warning circle" color="red"
-                              onChange={handleSearch}
-                              value={searchUrl}
-                              fluid type="text"/>;
-            default:
-                return (
-                    <Input placeholder="Enter youtube url"
-                           onChange={handleSearch}
-                           value={searchUrl}
-                           fluid type="text"/>
-                );
+                searchIcon = <Icon name="warning circle" color="red"/>;
+                break;
         }
+
+        return (
+            <Input icon={searchIcon}
+                   loading={searching} readOnly={searching}
+                   placeholder="Enter youtube url"
+                   onChange={handleSearch}
+                   value={searchUrl}
+                   fluid type="text"/>
+        );
     }
 }

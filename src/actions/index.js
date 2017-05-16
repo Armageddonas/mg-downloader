@@ -7,10 +7,9 @@ export const RECEIVE_VIDEO_INFO = 'RECEIVE_VIDEO_INFO';
 export const INVALID_SEARCH = 'INVALID_SEARCH';
 export const SET_SEARCH_URL = 'SET_SEARCH_URL';
 
-export function requestVideoInfo(url) {
+export function requestVideoInfo() {
     return {
-        type: REQUEST_VIDEO_INFO,
-        url
+        type: REQUEST_VIDEO_INFO
     }
 }
 
@@ -37,21 +36,19 @@ export function setSearchUrl(url) {
 export function fetchVideoInfo(videoUrl) {
     return (dispatch, getState) => {
 
+        // Check if url is valid and if it already exists in the list
         let searchUrl = getState().videoList.search.url;
         let videos = getState().videoList.videos;
-
-        // Check if url is valid and if it already exists in the list
         if ((!validateYouTubeUrl(searchUrl) || findUniqueObjectPos(videos, 'url', searchUrl) > -1)) {
             dispatch(invalidSearch());
             return;
         }
 
-        dispatch(requestVideoInfo(videoUrl));
+        // Request is about to start
+        dispatch(requestVideoInfo());
 
-        let onInfoFound = res => {
-            console.log(res);
-            dispatch(receiveVideoInfo(res))
-        };
+        // Send request
+        let onInfoFound = res => dispatch(receiveVideoInfo(res));
         let onError = (url) => console.log('Error on: ', url);
 
         return videoTools.getInfo(videoUrl, onInfoFound, onError);
