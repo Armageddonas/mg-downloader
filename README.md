@@ -9,3 +9,6 @@ npm install
 
 In case you are on a linux machine run
 `npm run postInstallLinux`
+
+## Errors on
+[This url](https://www.youtube.com/watch?v=Z2Pa66C8Y1c)

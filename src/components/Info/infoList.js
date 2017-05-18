@@ -5,7 +5,7 @@ import InfoItem from '../../containers/info/infoItem';
 
 const InfoList = ({videos, downloadPath}) => {
     const listItems = videos.map((video) =>
-        <InfoItem key={video.id || video.url}
+        <InfoItem key={video.id}
                   video={video}
                   downloadPath={downloadPath}/>);
 
