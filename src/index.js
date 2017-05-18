@@ -1,4 +1,5 @@
 import {app, BrowserWindow} from 'electron';
+import environment from './environment'
 
 // if (require('electron-squirrel-startup')) return;
 
@@ -91,7 +92,7 @@ const createWindow = () => {
     mainWindow.loadURL(`file://${__dirname}/index.html`);
 
     // Open the DevTools..
-    // mainWindow.webContents.openDevTools();
+    if(environment.debug === true) mainWindow.webContents.openDevTools();
     // Emitted when the window is closed.
     mainWindow.on('closed', () => {
         // Dereference the window object, usually you would store windows
