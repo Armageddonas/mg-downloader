@@ -3,13 +3,13 @@ import React from 'react';
 import InfoList from '../../containers/info/infoList'
 import SearchVideo from '../../containers/downloader/searchVideo'
 
-const DisplayContent = ({downloadPath}) => {
+const DisplayContent = () => {
     return (
         <div>
             <SearchVideo/>
             <br/>
             <br/>
-            <InfoList downloadPath={downloadPath}/>
+            <InfoList/>
         </div>
     );
 };

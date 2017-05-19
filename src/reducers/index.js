@@ -24,7 +24,7 @@ function videoList(state = {search: {state: null, url: ''}, videos: []}, action)
             return Object.assign({}, state, nextState);
         case SET_DOWNLOAD_PATH:
             localStorage.setItem('downloadPath', JSON.stringify(action.path));
-            return Object.assign({}, state, {downloadPath: action.path});
+            return Object.assign({}, state, {downloadPath: {value: action.path, exists: true}});
         case REQUEST_VIDEO_INFO:
         case RECEIVE_VIDEO_INFO:
             return videoRequests(state, action.type, action.info);

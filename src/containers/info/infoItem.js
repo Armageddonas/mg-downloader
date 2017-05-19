@@ -4,6 +4,11 @@ import {connect} from 'react-redux'
 import {removeVideo} from '../../actions'
 import infoItem from '../../components/Info/infoItem'
 
+const mapStateToProps = (state) => {
+    const {videoList} = state;
+    return {downloadPath: videoList.downloadPath};
+};
+
 const mapDispatchToProps = (dispatch) => {
     return {
         handleRemoveVideo: (id) => {
@@ -13,7 +18,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const InfoItem = connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(infoItem);
 

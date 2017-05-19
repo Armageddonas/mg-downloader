@@ -67,7 +67,7 @@ class MainWindow extends Component {
                                     </Grid.Row>
                                 </Grid>
                                 <br/>
-                                <DisplayContent downloadPath={this.state.downloadPath}/>
+                                <DisplayContent/>
                             </Grid.Column>
                         </Grid>
                     </Segment>
