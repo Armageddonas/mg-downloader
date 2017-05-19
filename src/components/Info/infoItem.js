@@ -25,12 +25,11 @@ export default class InfoItem extends Component {
 
     handleVideoDownload() {
         // Disable download if folder doesn't exists
-        if (!this.props.downloadPath.exists) return;
         console.log('run download...');
 
         this.setState({downloadPressed: true});
         // Get paths
-        let path = this.state.path || this.props.downloadPath.value;
+        let path = this.state.path || this.props.downloadPath;
         this.tempFilepath = path + '/' + this.state.filename.replace(/[!@#$%^&*\/\\]/g, '') + '.temp';
         this.audioFilepath = path + '/' + this.state.filename.replace(/[!@#$%^&*\/\\]/g, '') + '.mp3';
 
@@ -67,8 +66,7 @@ export default class InfoItem extends Component {
                 <List.Content floated='right'>
                     {
                         this.state.percent < 100 ?
-                            <DownloadIcon downloadPath={this.props.downloadPath}
-                                          handleVideoDownload={this.handleVideoDownload}/>
+                            <DownloadIcon handleVideoDownload={this.handleVideoDownload}/>
                             :
                             <FolderIcon filepath={this.audioFilepath}/>
                     }
@@ -79,7 +77,7 @@ export default class InfoItem extends Component {
                 <List.Content floated='right'>
                     <ItemSettings filename={this.state.filename} handleFilename={this.handleFilename}
                                   onPathChange={this.onPathChange}
-                                  directory={this.state.path || this.props.downloadPath.value}
+                                  directory={this.state.path || this.props.downloadPath}
                                   disabled={this.state.downloadPressed}/>
                 </List.Content>
                 <Image avatar src={this.props.video.thumbnail}/>

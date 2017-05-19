@@ -3,7 +3,7 @@ import {List} from 'semantic-ui-react'
 
 import InfoItem from '../../containers/info/infoItem';
 
-const InfoList = ({videos, downloadPath}) => {
+const InfoList = ({videos}) => {
     const listItems = videos.map((video) =>
         <InfoItem key={video.id}
                   video={video}/>);

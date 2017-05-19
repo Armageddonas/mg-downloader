@@ -8,8 +8,10 @@ import fileManager from '../../tools/fileManager/fileManager'
 class MainWindow extends Component {
     constructor(props) {
         super(props);
-        this.state = {downloadPath: fileManager.getDownloadPath(), visible: false};
-        this.props.setDownloadPath(this.state.downloadPath.value);
+        let dlPath = fileManager.getDownloadPath();
+        // todo: handle path errors
+        this.state = {downloadPathExists: null, visible: false};
+        this.props.setDownloadPath(dlPath.value);
 
         this.toggleVisibility = this.toggleVisibility.bind(this);
     }
@@ -19,7 +21,7 @@ class MainWindow extends Component {
     }
 
     render() {
-        const {visible} = this.state;
+        const {visible, downloadPathExists} = this.state;
 
         return (
             <Sidebar.Pushable as={Segment}>
@@ -58,7 +60,7 @@ class MainWindow extends Component {
                                     <Grid.Row>
                                         <Grid.Column>
                                             <Message
-                                                style={{display: this.state.downloadPath.exists ? 'none' : 'block'}}
+                                                style={{display: downloadPathExists ? 'none' : 'block'}}
                                                 negative>
                                                 <Message.Header>Download folder is invalid</Message.Header>
                                                 <p>You can fix the path from settings</p>

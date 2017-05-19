@@ -17,7 +17,7 @@ export default class DownloadIcon extends Component {
     }
 
     render() {
-        let enabled = this.props.downloadPath.exists && !this.state.clicked;
+        let enabled = !this.state.clicked;
 
         return (
             <Popup

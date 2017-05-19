@@ -4,7 +4,7 @@ import DirectoryPicker from '../../components/mainWindow/navContent'
 
 const mapStateToProps = (state) => {
     const {videoList} = state;
-    return {downloadFolder: videoList.downloadPath.value};
+    return {downloadFolder: videoList.downloadPath};
 };
 
 const mapDispatchToProps = (dispatch) => {
