@@ -10,7 +10,7 @@ class MainWindow extends Component {
         super(props);
         let dlPath = fileManager.getDownloadPath();
         // todo: handle path errors
-        this.state = {downloadPathExists: null, visible: false};
+        this.state = {downloadPathExists: true, visible: false};
         this.props.setDownloadPath(dlPath.value);
 
         this.toggleVisibility = this.toggleVisibility.bind(this);

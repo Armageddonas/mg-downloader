@@ -33,6 +33,16 @@ function videoList(state = {search: {state: null, url: ''}, videos: []}, action)
     }
 }
 
+function settings(state = {}, action){
+    switch (action.type) {
+        case SET_DOWNLOAD_PATH:
+            localStorage.setItem('downloadPath', JSON.stringify(action.path));
+            return Object.assign({}, state, {downloadPath: action.path});
+        default:
+            return state;
+    }
+}
+
 function videoRequests(state, type, info) {
     let nextState;
 
@@ -73,7 +83,8 @@ function videoRequests(state, type, info) {
 }
 
 const rootReducer = combineReducers({
-    videoList
+    videoList,
+    settings
 });
 
 export default rootReducer

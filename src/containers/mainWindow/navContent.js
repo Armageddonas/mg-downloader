@@ -3,8 +3,8 @@ import {setDownloadPath} from '../../actions'
 import DirectoryPicker from '../../components/mainWindow/navContent'
 
 const mapStateToProps = (state) => {
-    const {videoList} = state;
-    return {downloadFolder: videoList.downloadPath};
+    const {settings} = state;
+    return {downloadFolder: settings.downloadPath};
 };
 
 const mapDispatchToProps = (dispatch) => {

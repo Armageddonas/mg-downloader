@@ -5,8 +5,8 @@ import {removeVideo} from '../../actions'
 import infoItem from '../../components/Info/infoItem'
 
 const mapStateToProps = (state) => {
-    const {videoList} = state;
-    return {downloadPath: videoList.downloadPath};
+    const {settings} = state;
+    return {downloadPath: settings.downloadPath};
 };
 
 const mapDispatchToProps = (dispatch) => {
