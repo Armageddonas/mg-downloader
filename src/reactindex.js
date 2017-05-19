@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import MainWindow from './components/mainWindow/mainWindow'
+import MainWindow from './containers/mainWindow/mainWindow'
 import environment from './environment'
 
 import {Provider} from 'react-redux'

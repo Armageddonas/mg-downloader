@@ -5,8 +5,8 @@
   "description": "My Electron application description",
   "main": "src/index.js",
   "scripts": {
-    "start": "scripts/setEnv.sh production && electron-forge start",
-    "dev": "scripts/setEnv.sh debug && electron-forge start",
+    "start": "scripts/setEnv.sh debug && electron-forge start",
+    "prod": "scripts/setEnv.sh production && electron-forge start",
     "postInstallLinux": "sudo chmod 755 ./node_modules/youtube-dl/bin/youtube-dl",
     "package": "electron-forge package",
     "make": "scripts/setEnv.sh production && electron-forge make",

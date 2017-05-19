@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux'
-import {REQUEST_VIDEO_INFO, RECEIVE_VIDEO_INFO, INVALID_SEARCH, SET_SEARCH_URL, REMOVE_VIDEO, SearchStates} from '../actions'
+import {REQUEST_VIDEO_INFO, RECEIVE_VIDEO_INFO, INVALID_SEARCH, SET_SEARCH_URL, REMOVE_VIDEO, SearchStates, SET_DOWNLOAD_PATH} from '../actions'
 import {findUniqueObjectPos} from "../tools/utilities/arrayUtilities";
 
 function videoList(state = {search: {state: null, url: ''}, videos: []}, action) {
@@ -22,6 +22,9 @@ function videoList(state = {search: {state: null, url: ''}, videos: []}, action)
             nextState.videos.splice(index, 1);
 
             return Object.assign({}, state, nextState);
+        case SET_DOWNLOAD_PATH:
+            localStorage.setItem('downloadPath', JSON.stringify(action.path));
+            return Object.assign({}, state, {downloadPath: action.path});
         case REQUEST_VIDEO_INFO:
         case RECEIVE_VIDEO_INFO:
             return videoRequests(state, action.type, action.info);

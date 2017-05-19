@@ -2,22 +2,16 @@ import React, {Component} from 'react';
 import {Sidebar, Segment, Grid, Menu, Header, Icon, Message} from 'semantic-ui-react'
 
 import DisplayContent from '../../containers/downloader/displayContent'
-import NavContent from './navContent'
+import NavContent from '../../containers/mainWindow/navContent'
 import fileManager from '../../tools/fileManager/fileManager'
-
 
 class MainWindow extends Component {
     constructor(props) {
         super(props);
         this.state = {downloadPath: fileManager.getDownloadPath(), visible: false};
+        this.props.setDownloadPath(this.state.downloadPath.value);
 
-        this.handleDownloadFolder = this.handleDownloadFolder.bind(this);
         this.toggleVisibility = this.toggleVisibility.bind(this);
-    }
-
-    handleDownloadFolder(dirPath) {
-        let path = fileManager.setDownloadPath(dirPath);
-        this.setState({downloadPath: path});
     }
 
     toggleVisibility() {
@@ -40,7 +34,7 @@ class MainWindow extends Component {
                     inverted
                 >
                     <Menu.Item name='path'>
-                        <NavContent onPathChange={this.handleDownloadFolder} downloadFolder={this.state.downloadPath.value}/>
+                        <NavContent/>
                     </Menu.Item>
                     <Menu.Item name='back'>
                         <Icon onClick={this.toggleVisibility} link name='left arrow'/>

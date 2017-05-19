@@ -7,6 +7,7 @@ export const RECEIVE_VIDEO_INFO = 'RECEIVE_VIDEO_INFO';
 export const INVALID_SEARCH = 'INVALID_SEARCH';
 export const SET_SEARCH_URL = 'SET_SEARCH_URL';
 export const REMOVE_VIDEO = 'REMOVE_VIDEO';
+export const SET_DOWNLOAD_PATH = 'SET_DOWNLOAD_PATH';
 
 export const SearchStates = {
     SEARCHING: 'SEARCHING',
@@ -15,9 +16,10 @@ export const SearchStates = {
 };
 
 // Search functions
-export function invalidSearch() {
+export function invalidSearch(url) {
     return {
-        type: INVALID_SEARCH
+        type: INVALID_SEARCH,
+        url
     }
 }
 
@@ -25,6 +27,14 @@ export function setSearchUrl(url) {
     return {
         type: SET_SEARCH_URL,
         url
+    }
+}
+
+// Settings functions
+export function setDownloadPath(path){
+    return {
+        type: SET_DOWNLOAD_PATH,
+        path
     }
 }
 
@@ -65,7 +75,7 @@ export function fetchVideoInfo(videoUrl) {
 
         // Send request
         let onInfoFound = res => dispatch(receiveVideoInfo(res));
-        let onError = (url) => console.log('Error on: ', url);
+        let onError = url => dispatch(invalidSearch(url));
 
         return videoTools.getInfo(videoUrl, onInfoFound, onError);
     }
