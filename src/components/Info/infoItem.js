@@ -58,33 +58,33 @@ export default class InfoItem extends Component {
     }
 
     render() {
-        if (this.props.video.loading)
-            return null;
+        const {video, handleRemoveVideo, downloadPath} = this.props;
+        const {filename, percent, path, downloadPressed} = this.state
 
         return (
             <List.Item style={{textAlign: 'left'}}>
                 <List.Content floated='right'>
                     {
-                        this.state.percent < 100 ?
+                        percent < 100 ?
                             <DownloadIcon handleVideoDownload={this.handleVideoDownload}/>
                             :
                             <FolderIcon filepath={this.audioFilepath}/>
                     }
                 </List.Content>
                 <List.Content floated='right'>
-                    <RemoveIcon handleVideoRemove={() => this.props.handleRemoveVideo(this.props.video.id)}/>
+                    <RemoveIcon handleVideoRemove={() => handleRemoveVideo(video.id)}/>
                 </List.Content>
                 <List.Content floated='right'>
-                    <ItemSettings filename={this.state.filename} handleFilename={this.handleFilename}
+                    <ItemSettings filename={filename} handleFilename={this.handleFilename}
                                   onPathChange={this.onPathChange}
-                                  directory={this.state.path || this.props.downloadPath}
-                                  disabled={this.state.downloadPressed}/>
+                                  directory={path || downloadPath}
+                                  disabled={downloadPressed}/>
                 </List.Content>
-                <Image avatar src={this.props.video.thumbnail}/>
+                <Image avatar src={video.thumbnail}/>
                 <List.Content>
-                    {this.state.filename}
+                    {filename}
                 </List.Content>
-                <ProgressBar percent={this.state.percent}/>
+                <ProgressBar percent={percent}/>
             </List.Item>
         );
     }

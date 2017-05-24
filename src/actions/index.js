@@ -62,6 +62,7 @@ export function removeVideo(id) {
 export function fetchVideoInfo(videoUrl) {
     return (dispatch, getState) => {
 
+        // todo: check by id not url
         // Check if url is valid and if it already exists in the list
         let searchUrl = getState().videoList.search.url;
         let videos = getState().videoList.videos;
@@ -80,4 +81,3 @@ export function fetchVideoInfo(videoUrl) {
         return videoTools.getInfo(videoUrl, onInfoFound, onError);
     }
 }
-

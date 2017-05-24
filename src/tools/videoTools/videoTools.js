@@ -10,13 +10,6 @@ class videoTools {
         // Zero percent on start
         onGetPercentage(0);
 
-        if ('debug' === 'debug' && fs.existsSync(videoFilename)) {
-            if (onCompletion) {
-                onCompletion();
-                return;
-            }
-        }
-
         // Video config
         let videoDl = youtubedl(
             videoUrl,
@@ -43,7 +36,6 @@ class videoTools {
         let pos = 0;
         videoDl.on('data', function data(chunk) {
             pos += chunk.length;
-            // let size = self.state.size;
             if (size) {
                 let percent = pos / size * 100;
                 // Scale down to 90%
@@ -53,6 +45,7 @@ class videoTools {
         });
     }
 
+    // todo: rename to initConvertToMp3
     static convertToMp3(videoFilename, audioFilename, onGetPercentage, onCompletion) {
 
         // Functions is used as a callback

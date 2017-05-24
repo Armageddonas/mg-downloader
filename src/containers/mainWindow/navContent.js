@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import {setDownloadPath} from '../../actions'
-import DirectoryPicker from '../../components/mainWindow/navContent'
+import NavContent from '../../components/mainWindow/navContent'
 
 const mapStateToProps = (state) => {
     const {settings} = state;
@@ -15,9 +15,9 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-const dp = connect(
+const nc = connect(
     mapStateToProps,
     mapDispatchToProps
-)(DirectoryPicker);
+)(NavContent);
 
-export default dp;
+export default nc;

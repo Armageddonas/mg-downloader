@@ -11,9 +11,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         handleUrlSearch: (url) => {
             dispatch(requestVideoInfo(url))
-        },
-        handleRemoveVideo: (id) => {
-            dispatch(removeVideo(id))
         }
     }
 };

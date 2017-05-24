@@ -18,13 +18,15 @@ export default class DirectoryPicker extends Component {
     }
 
     render() {
+        const {directory} = this.props;
+
         return (
             <div>
                 <Grid columns='equal'>
                     <Grid.Row>
                         <Grid.Column>
                             <Input label="path" fluid readOnly
-                                   value={this.props.directory}
+                                   value={directory}
                                    type="text"/>
 
                         </Grid.Column>
