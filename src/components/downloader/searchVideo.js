@@ -1,20 +1,26 @@
 import React, {Component} from 'react';
-import {Input, Icon} from 'semantic-ui-react'
+import {Input, Icon, Button} from 'semantic-ui-react'
+const {clipboard} = require('electron');
 
 export default class SearchVideo extends Component {
     constructor(props) {
         super(props);
         this.handleUrlSearch = this.handleUrlSearch.bind(this);
+        this.pasteFromKeyboard = this.pasteFromKeyboard.bind(this);
     }
 
-    handleUrlSearch(e) {
+    handleUrlSearch(url) {
         // Get url from input
-        let videoUrl = e.target.value;
+        let videoUrl = url;
         if(this.props.search.state === this.props.SearchStates.SEARCHING) return;
 
         this.props.handleInputUrl(videoUrl);
         this.props.requestVideoInfo(videoUrl);
     };
+
+    pasteFromKeyboard(){
+        this.handleUrlSearch(clipboard.readText());
+    }
 
     render() {
         let handleSearch = this.handleUrlSearch;
@@ -40,10 +46,12 @@ export default class SearchVideo extends Component {
 
         return (
             <Input icon={searchIcon}
+                   iconPosition='left'
                    loading={searching}
                    placeholder="Enter youtube url"
-                   onChange={handleSearch}
+                   onChange={(e)=>{handleSearch(e.target.value)}}
                    value={searchUrl}
+                   action={<Button type='submit' color="blue" disabled={searching} onClick={this.pasteFromKeyboard}>Paste</Button>}
                    fluid type="text"/>
         );
     }
