@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import {setDownloadPath} from '../../actions'
-import DirectoryPicker from '../../components/mainWindow/mainWindow'
+import MainWindow from '../../components/mainWindow/mainWindow'
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -10,9 +10,9 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-const dp = connect(
+const mw = connect(
     null,
     mapDispatchToProps
-)(DirectoryPicker);
+)(MainWindow);
 
-export default dp;
+export default mw;

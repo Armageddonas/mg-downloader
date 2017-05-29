@@ -64,7 +64,7 @@ export function fetchVideoInfo(videoUrl) {
 
         // todo: check by id not url
         // Check if url is valid and if it already exists in the list
-        let searchUrl = getState().videoList.search.url;
+        let searchUrl = videoUrl;
         let videos = getState().videoList.videos;
         if ((!validateYouTubeUrl(searchUrl) || findUniqueObjectPos(videos, 'url', searchUrl) > -1)) {
             dispatch(invalidSearch());
