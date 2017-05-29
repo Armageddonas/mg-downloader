@@ -83,9 +83,9 @@ let mainWindow;
 
 const createWindow = () => {
     // Create the browser window.
-    mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+    let mainWindow = new BrowserWindow({show: false});
+    mainWindow.once('ready-to-show', () => {
+        mainWindow.show();
     });
 
     // and load the index.html of the app
