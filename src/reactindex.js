@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 
 import MainWindow from './containers/mainWindow/mainWindow'
 import environment from './environment'
+import {initState} from './tests'
 
 import {Provider} from 'react-redux'
 import {createLogger} from 'redux-logger'
@@ -19,6 +20,10 @@ let store = createStore(
     todoApp,
     applyMiddleware(...middleware)
 );
+
+if (environment.debug === true) {
+    initState(store.dispatch);
+}
 
 ReactDOM.render(
     <Provider store={store}>
