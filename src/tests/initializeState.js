@@ -2,8 +2,10 @@ import environment from '../environment'
 import {fetchVideoInfo} from '../actions'
 
 let initVideoList = (dispatch) => {
-    if (environment.debug === true && environment.sampleUrls) {
-        environment.sampleUrls.forEach((el) => {
+    let {active, sampleUrls} = environment.initVideoList;
+
+    if (active === true) {
+        sampleUrls.forEach((el) => {
             dispatch(fetchVideoInfo(el));
         })
     }

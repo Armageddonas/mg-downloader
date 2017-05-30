@@ -11,6 +11,7 @@
     "postInstallLinux": "sudo chmod 755 ./node_modules/youtube-dl/bin/youtube-dl",
     "package": "electron-forge package",
     "make": "scripts/setEnv.sh production && electron-forge make",
+    "makeWindows": "electron-forge make",
     "lint": "eslint src"
   },
   "keywords": [],
