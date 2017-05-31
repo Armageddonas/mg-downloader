@@ -30,7 +30,7 @@ function videoRequests(state, type, info) {
                 didInvalidate: false,
             };
 
-            return Object.assign({}, state, {info: video}, {state: SearchStates.FOUND}, {url: ''});
+            return Object.assign({}, state, {info: video}, {state: SearchStates.FOUND});
         default:
             return state;
     }

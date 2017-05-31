@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import {setDownloadPath} from '../../settings/index'
+import {actions} from '../../settings'
 import NavContent from '../components/navContent'
 
 const mapStateToProps = (state) => {
@@ -10,7 +10,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onPathChange: (path) => {
-            dispatch(setDownloadPath(path))
+            dispatch(actions.setDownloadPath(path))
         }
     }
 };
