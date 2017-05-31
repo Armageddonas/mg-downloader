@@ -1,12 +1,12 @@
 import React from 'react';
 
 import {connect} from 'react-redux'
-import {fetchVideoInfo, setSearchUrl, SearchStates} from '../../actions'
-import searchVideo from '../../components/downloader/searchVideo'
+import {fetchVideoInfo, setSearchUrl, SearchStates} from './actions'
+import searchVideoBar from './components/searchVideoBar'
 
 const mapStateToProps = (state) => {
-    const {videoList} = state;
-    return {search: videoList.search, SearchStates};
+    const {searchVideoBar} = state;
+    return {search: {url: searchVideoBar.url, state: searchVideoBar.state}, SearchStates};
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -20,9 +20,9 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-const SearchVideo = connect(
+const SearchVideoBar = connect(
     mapStateToProps,
     mapDispatchToProps
-)(searchVideo);
+)(searchVideoBar);
 
-export default SearchVideo;
+export default SearchVideoBar;

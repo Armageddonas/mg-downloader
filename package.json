@@ -7,7 +7,6 @@
   "scripts": {
     "start": "node scripts/setEnv.js debug && electron-forge start",
     "prod": "node scripts/setEnv.js production && electron-forge start",
-    "postInstallLinux": "sudo chmod 755 ./node_modules/youtube-dl/bin/youtube-dl",
     "package": "electron-forge package",
     "make": "node scripts/setEnv.js production && electron-forge make",
     "lint": "eslint src"

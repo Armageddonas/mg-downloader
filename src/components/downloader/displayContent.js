@@ -1,12 +1,12 @@
 import React from 'react';
 
 import InfoList from '../../containers/info/infoList'
-import SearchVideo from '../../containers/downloader/searchVideo'
+import SearchVideoBar from '../../modules/searchVideoBar'
 
 const DisplayContent = () => {
     return (
         <div>
-            <SearchVideo/>
+            <SearchVideoBar/>
             <br/>
             <br/>
             <InfoList/>

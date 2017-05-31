@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Input, Icon, Button} from 'semantic-ui-react'
 const {clipboard} = require('electron');
 
-export default class SearchVideo extends Component {
+export default class SearchVideoBar extends Component {
     constructor(props) {
         super(props);
         this.handleUrlSearch = this.handleUrlSearch.bind(this);
