@@ -1,7 +1,7 @@
 import React from 'react';
 import {Icon, Modal, Grid} from 'semantic-ui-react'
 
-import DirectoryPicker from '../../../components/settings/directoryPicker'
+import {DirectoryPicker} from '../../settings'
 import Rename from "./rename";
 
 const ItemSettings = ({filename, handleFilename, onPathChange, directory, disabled}) => {

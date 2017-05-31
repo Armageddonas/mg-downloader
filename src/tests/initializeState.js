@@ -1,12 +1,12 @@
 import environment from '../environment'
-import {fetchVideoInfo} from '../actions'
+import {actions} from '../modules/searchVideoBar'
 
 let initVideoList = (dispatch) => {
     let {active, sampleUrls} = environment.initVideoList;
 
     if (active === true) {
         sampleUrls.forEach((el) => {
-            dispatch(fetchVideoInfo(el));
+            dispatch(actions.fetchVideoInfo(el));
         })
     }
 };
