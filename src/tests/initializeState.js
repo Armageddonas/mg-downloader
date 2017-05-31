@@ -1,4 +1,4 @@
-import environment from '../environment'
+import environment from '../../environment'
 import {actions} from '../modules/searchVideoBar'
 
 let initVideoList = (dispatch) => {

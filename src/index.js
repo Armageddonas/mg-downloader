@@ -1,5 +1,5 @@
 import {app, BrowserWindow} from 'electron';
-import environment from './environment'
+import environment from '../environment'
 
 // if (require('electron-squirrel-startup')) return;
 
