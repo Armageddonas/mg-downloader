@@ -7,6 +7,7 @@
   "scripts": {
     "start": "node scripts/setEnv.js debug && electron-forge start",
     "prod": "node scripts/setEnv.js production && electron-forge start",
+    "postInstallLinux": "sudo chmod 755 ./node_modules/youtube-dl/bin/youtube-dl",
     "package": "electron-forge package",
     "make": "node scripts/setEnv.js production && electron-forge make",
     "lint": "eslint src"
@@ -60,9 +61,9 @@
   "devDependencies": {
     "babel-plugin-transform-async-to-generator": "^6.22.0",
     "babel-preset-env": "^1.1.8",
-    "electron-prebuilt-compile": "1.6.6",
+    "electron-prebuilt-compile": "1.6.11",
     "eslint": "^3.15.0",
-    "eslint-config-airbnb": "^14.0.0",
+    "eslint-config-airbnb": "^15.0.1",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^5.0.1",
     "eslint-plugin-react": "^7.0.0"
