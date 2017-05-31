@@ -13,7 +13,11 @@ const mapStateToProps = (state) => {
 const InfoList = connect(
     mapStateToProps
 )(infoList);
+const actions = {addInfoToList, removeVideo};
+const actionTypes = {ADD_INFO_TO_LIST, REMOVE_VIDEO};
+const reducers = {videoList};
 
 export {InfoList};
-export {videoList};
-export {addInfoToList, removeVideo, ADD_INFO_TO_LIST, REMOVE_VIDEO};
+export {actions};
+export {actionTypes};
+export {reducers};

@@ -1,11 +1,11 @@
 import {connect} from 'react-redux'
-import {setDownloadPath} from '../settings/index'
+import {actions} from '../settings/index'
 import mw from './components/mainWindow'
 
 const mapDispatchToProps = (dispatch) => {
     return {
         setDownloadPath: (path) => {
-            dispatch(setDownloadPath(path))
+            dispatch(actions.setDownloadPath(path))
         }
     }
 };

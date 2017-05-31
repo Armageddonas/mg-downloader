@@ -1,12 +1,12 @@
 import {combineReducers} from 'redux'
-import {reducers} from '../modules/searchVideoBar'
-import {videoList} from '../modules/videoList'
-import {settings} from '../modules/settings'
+import {reducers as SVBReducers} from '../modules/searchVideoBar'
+import {reducers as VLReducers} from '../modules/videoList'
+import {reducers as SReducers} from '../modules/settings'
 
 const rootReducer = combineReducers({
-    videoList,
-    settings,
-    searchVideoBar: reducers.searchVideoBar
+    videoList: VLReducers.videoList,
+    settings: SReducers.settings,
+    searchVideoBar: SVBReducers.searchVideoBar
 });
 
 export default rootReducer

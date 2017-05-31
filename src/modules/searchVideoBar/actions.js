@@ -2,7 +2,7 @@ import {validateYouTubeUrl} from "../../tools/utilities/validators";
 import {findUniqueObjectPos} from "../../tools/utilities/arrayUtilities";
 import videoTools from '../../tools/videoTools/videoTools';
 
-import {addInfoToList} from '../videoList'
+import {actions} from '../videoList'
 
 export const INVALID_SEARCH = 'INVALID_SEARCH';
 export const SET_SEARCH_URL = 'SET_SEARCH_URL';
@@ -61,7 +61,7 @@ export function fetchVideoInfo(videoUrl) {
         let onInfoFound = res => {
             dispatch(receiveVideoInfo(res));
             // todo: add modular logic here
-            dispatch(addInfoToList(res));
+            dispatch(actions.addInfoToList(res));
         };
         let onError = url => dispatch(invalidSearch(url));
 
