@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import MainWindow from './containers/mainWindow/mainWindow'
+import {MainWindow} from './modules/mainView/index'
 import environment from '../environment'
 import {initState} from './tests'
 

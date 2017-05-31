@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
-import {setDownloadPath} from '../../modules/settings'
-import MainWindow from '../../components/mainWindow/mainWindow'
+import {setDownloadPath} from '../settings/index'
+import mw from './components/mainWindow'
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -10,9 +10,9 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-const mw = connect(
+const MainWindow = connect(
     null,
     mapDispatchToProps
-)(MainWindow);
+)(mw);
 
-export default mw;
+export {MainWindow};

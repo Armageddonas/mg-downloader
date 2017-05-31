@@ -1,5 +1,5 @@
 import React from 'react';
-import {DirectoryPicker} from "../../modules/settings";
+import {DirectoryPicker} from "../../settings/index";
 
 const NavContent = ({onPathChange, downloadFolder}) => {
     return (

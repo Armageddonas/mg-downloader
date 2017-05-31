@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
-import {setDownloadPath} from '../../modules/settings'
-import NavContent from '../../components/mainWindow/navContent'
+import {setDownloadPath} from '../../settings/index'
+import NavContent from '../components/navContent'
 
 const mapStateToProps = (state) => {
     const {settings} = state;

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import {InfoList} from '../../modules/videoList'
-import {SearchVideoBar} from '../../modules/searchVideoBar'
+import {InfoList} from '../../videoList/index'
+import {SearchVideoBar} from '../../searchVideoBar/index'
 
 const DisplayContent = () => {
     return (

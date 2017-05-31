@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Sidebar, Segment, Grid, Menu, Header, Icon, Message} from 'semantic-ui-react'
 
-import DisplayContent from '../../components/downloader/displayContent'
-import NavContent from '../../containers/mainWindow/navContent'
-import fileManager from '../../tools/fileManager/fileManager'
+import DisplayContent from './mainContent'
+import NavContent from '../containers/navContent'
+import fileManager from '../../../tools/fileManager/fileManager'
 
 class MainWindow extends Component {
     constructor(props) {
@@ -45,6 +45,7 @@ class MainWindow extends Component {
                 </Sidebar>
                 <Sidebar.Pusher>
                     <Segment basic>
+
                         <Grid centered>
                             <Grid.Column mobile={16} tablet={14} computer={8}>
                                 <br/>
@@ -72,6 +73,7 @@ class MainWindow extends Component {
                                 <DisplayContent/>
                             </Grid.Column>
                         </Grid>
+
                     </Segment>
                 </Sidebar.Pusher>
             </Sidebar.Pushable>
