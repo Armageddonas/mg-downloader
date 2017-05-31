@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Image, List} from 'semantic-ui-react'
 
-import videoTools from '../../tools/videoTools/videoTools'
+import videoTools from '../../../tools/videoTools/videoTools'
 import DownloadIcon from "./downloadIcon";
 import FolderIcon from "./folderIcon";
 import RemoveIcon from "./removeIcon";

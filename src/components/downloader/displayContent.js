@@ -1,6 +1,6 @@
 import React from 'react';
 
-import InfoList from '../../containers/info/infoList'
+import {InfoList} from '../../modules/videoList'
 import SearchVideoBar from '../../modules/searchVideoBar'
 
 const DisplayContent = () => {

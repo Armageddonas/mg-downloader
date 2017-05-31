@@ -1,7 +1,7 @@
 import React from 'react';
 import {List} from 'semantic-ui-react'
 
-import InfoItem from '../../containers/info/infoItem';
+import InfoItem from '../containers/infoItem';
 
 const InfoList = ({videos}) => {
     const listItems = videos.map((video) =>

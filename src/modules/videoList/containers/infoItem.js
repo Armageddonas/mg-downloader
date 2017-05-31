@@ -1,8 +1,8 @@
 import React from 'react';
 
 import {connect} from 'react-redux'
-import {removeVideo} from '../../modules/videoList'
-import infoItem from '../../components/Info/infoItem'
+import {removeVideo} from '../index'
+import infoItem from '../components/infoItem'
 
 const mapStateToProps = (state) => {
     const {settings} = state;

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Sidebar, Segment, Grid, Menu, Header, Icon, Message} from 'semantic-ui-react'
 
-import DisplayContent from '../../containers/downloader/displayContent'
+import DisplayContent from '../../components/downloader/displayContent'
 import NavContent from '../../containers/mainWindow/navContent'
 import fileManager from '../../tools/fileManager/fileManager'
 
