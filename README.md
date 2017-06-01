@@ -1,14 +1,19 @@
+# Introduction
+A minimal youtube to mp3 cross platform desktop application
+
 # Developer 
 ## Download package
 
 ```bash
 git clone https://github.com/Armageddonas/mg-downloader.git
-cd mg-downloader
-npm install
+cd mg-downloader && npm install
 ```
 
-In case you are on a linux machine run
+In case you are on a linux machine run  
 `npm run postInstallLinux`
 
-## Errors on
-[This url](https://www.youtube.com/watch?v=Z2Pa66C8Y1c)
+## Run on debug mode
+'npm start'
+
+## Run on production mode
+'npm run prod'
