@@ -1,5 +1,5 @@
 # Introduction
-A minimal youtube to mp3 cross platform desktop application  
+A minimal youtube to mp3 cross platform desktop application build on electron with react and redux  
   
   
 ![app preview](https://github.com/Armageddonas/mg-downloader/raw/master/public/app-preview.gif)
@@ -16,7 +16,7 @@ In case you are on a linux machine run
 `npm run postInstallLinux`
 
 ## Run on debug mode
-'npm start'
+`npm start`
 
 ## Run on production mode
-'npm run prod'
+`npm run prod`
