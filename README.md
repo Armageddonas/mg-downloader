@@ -1,7 +1,8 @@
 # Introduction
-A minimal youtube to mp3 cross platform desktop application
+A minimal youtube to mp3 cross platform desktop application  
+![app preview](https://github.com/Armageddonas/mg-downloader/raw/master/public/app-preview.gif)
 
-# Developer 
+# Developer
 ## Download package
 
 ```bash
