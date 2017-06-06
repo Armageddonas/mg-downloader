@@ -54,7 +54,7 @@ class MainWindow extends Component {
                                         <Grid.Column>
                                             <Header as="h1">MeGa Downloader</Header>
                                         </Grid.Column>
-                                        <Grid.Column width={2} tablet={1}>
+                                        <Grid.Column mobile={2} tablet={1} computer={1}>
                                             <Icon name="settings" size="large" onClick={this.toggleVisibility}/>
                                         </Grid.Column>
                                     </Grid.Row>
