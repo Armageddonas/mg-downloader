@@ -7,6 +7,7 @@ import FolderIcon from "./folderIcon";
 import RemoveIcon from "./removeIcon";
 import ItemSettings from "./itemSettings";
 import ProgressBar from "./progressBar";
+import ErrorModal from "./errorModal";
 
 const fs = require('fs');
 
@@ -32,10 +33,15 @@ export default class InfoItem extends Component {
     handleVideoDownload() {
         // Disable download if folder doesn't exists
         console.log('run download...');
+        // Get path
+        let path = this.state.path || this.props.downloadPath;
+        // Check if path exists
+        if(!fs.existsSync(path)){
+            this.refs['errorModal'].open();
+            return;
+        }
 
         this.setState({downloadState: DownloadState.DOWNLOADING});
-        // Get paths
-        let path = this.state.path || this.props.downloadPath;
         this.tempFilepath = path + '/' + this.state.filename.replace(/[!@#$%^&*\/\\]/g, '') + '.temp';
         this.audioFilepath = path + '/' + this.state.filename.replace(/[!@#$%^&*\/\\]/g, '') + '.mp3';
 
@@ -92,6 +98,9 @@ export default class InfoItem extends Component {
                 <Image avatar src={video.thumbnail}/>
                 <List.Content>
                     {filename}
+                </List.Content>
+                <List.Content>
+                    <ErrorModal ref="errorModal"/>
                 </List.Content>
                 <ProgressBar percent={percent}/>
             </List.Item>

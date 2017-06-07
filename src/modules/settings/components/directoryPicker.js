@@ -1,42 +1,36 @@
 import React, {Component} from 'react';
 import {Icon, Grid, Input} from 'semantic-ui-react'
+let fs = require("fs");
 const {dialog} = require('electron').remote;
 
-export default class DirectoryPicker extends Component {
-    constructor(props) {
-        super(props);
+const DirectoryPicker = ({onPathChange, directory}) => {
 
-        this.handleDirectoryChooser = this.handleDirectoryChooser.bind(this);
-    }
-
-    handleDirectoryChooser() {
+    const handleDirectoryChooser = () => {
         let pathArray = dialog.showOpenDialog({
             properties: ['openDirectory']
         });
 
-        if (pathArray) this.props.onPathChange(pathArray[0]);
-    }
+        if (pathArray) onPathChange(pathArray[0]);
+    };
 
-    render() {
-        const {directory} = this.props;
+    return (
+        <div>
+            <Grid columns='equal'>
+                <Grid.Row>
+                    <Grid.Column>
+                        <Input label="path" fluid readOnly
+                               error={!fs.existsSync(directory)}
+                               value={directory}
+                               type="text"/>
+                    </Grid.Column>
+                    <Grid.Column width={3}>
+                        <Icon link name='folder open' size='large'
+                              onClick={handleDirectoryChooser}/>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </div>
+    );
+};
 
-        return (
-            <div>
-                <Grid columns='equal'>
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Input label="path" fluid readOnly
-                                   value={directory}
-                                   type="text"/>
-
-                        </Grid.Column>
-                        <Grid.Column width={3}>
-                            <Icon link name='folder open' size='large'
-                                  onClick={this.handleDirectoryChooser}/>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </div>
-        );
-    }
-}
+export default DirectoryPicker

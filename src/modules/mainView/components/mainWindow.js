@@ -9,8 +9,8 @@ class MainWindow extends Component {
     constructor(props) {
         super(props);
         let dlPath = fileManager.getDownloadPath();
-        // todo: handle path errors
-        this.state = {downloadPathExists: true, visible: false};
+        // todo: move sidebar to separate component
+        this.state = {visible: false};
         this.props.setDownloadPath(dlPath.value);
 
         this.toggleVisibility = this.toggleVisibility.bind(this);
@@ -21,7 +21,7 @@ class MainWindow extends Component {
     }
 
     render() {
-        const {visible, downloadPathExists} = this.state;
+        const {visible} = this.state;
 
         return (
             <Sidebar.Pushable as={Segment}>
@@ -56,16 +56,6 @@ class MainWindow extends Component {
                                         </Grid.Column>
                                         <Grid.Column mobile={2} tablet={1} computer={1}>
                                             <Icon name="settings" size="large" onClick={this.toggleVisibility}/>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                    <Grid.Row>
-                                        <Grid.Column>
-                                            <Message
-                                                style={{display: downloadPathExists ? 'none' : 'block'}}
-                                                negative>
-                                                <Message.Header>Download folder is invalid</Message.Header>
-                                                <p>You can fix the path from settings</p>
-                                            </Message>
                                         </Grid.Column>
                                     </Grid.Row>
                                 </Grid>
