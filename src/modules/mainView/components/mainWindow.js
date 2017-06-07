@@ -49,9 +49,9 @@ class MainWindow extends Component {
                         <Grid centered>
                             <Grid.Column mobile={16} tablet={14} computer={12}>
                                 <br/>
-                                <Grid columns='equal' centered>
+                                <Grid columns='equal'>
                                     <Grid.Row>
-                                        <Grid.Column>
+                                        <Grid.Column textAlign="center">
                                             <Header as="h1">MeGa Downloader</Header>
                                         </Grid.Column>
                                         <Grid.Column mobile={2} tablet={1} computer={1}>

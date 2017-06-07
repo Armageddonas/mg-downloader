@@ -15,10 +15,16 @@ export const SearchStates = {
     ERROR: 'ERROR'
 };
 
-export function invalidSearch(url) {
+export const ErrorMessages = {
+    INVALID_URL: 'Invalid youtube url',
+    URL_EXISTS: 'Url already exists in list',
+    GENERIC_ERROR: 'A problem occurred'
+};
+
+export function invalidSearch(errorMsg) {
     return {
         type: INVALID_SEARCH,
-        url
+        errorMsg
     }
 }
 
@@ -44,13 +50,20 @@ export function receiveVideoInfo(info) {
 
 export function fetchVideoInfo(videoUrl) {
     return (dispatch, getState) => {
+        let {INVALID_URL, URL_EXISTS, GENERIC_ERROR} = ErrorMessages;
 
         // todo: check by id not url
         // Check if url is valid and if it already exists in the list
         let searchUrl = videoUrl;
         let videos = getState().videoList.videos;
-        if ((!validateYouTubeUrl(searchUrl) || findUniqueObjectPos(videos, 'url', searchUrl) > -1)) {
-            dispatch(invalidSearch());
+        if (searchUrl === ''){
+            dispatch(invalidSearch(null));
+            return;
+        } else if (!validateYouTubeUrl(searchUrl) ){
+            dispatch(invalidSearch(INVALID_URL));
+            return;
+        } else if (findUniqueObjectPos(videos, 'url', searchUrl) > -1){
+            dispatch(invalidSearch(URL_EXISTS));
             return;
         }
 
@@ -63,7 +76,7 @@ export function fetchVideoInfo(videoUrl) {
             // todo: add modular logic here
             dispatch(actions.addInfoToList(res));
         };
-        let onError = url => dispatch(invalidSearch(url));
+        let onError = url => dispatch(invalidSearch(GENERIC_ERROR));
 
         return videoTools.getInfo(videoUrl, onInfoFound, onError);
     }

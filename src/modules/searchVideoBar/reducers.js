@@ -1,11 +1,13 @@
 import {INVALID_SEARCH, SET_SEARCH_URL, REQUEST_VIDEO_INFO, RECEIVE_VIDEO_INFO, SearchStates} from './actions'
 
-export function searchVideoBar(state = {state: null, url: '', info: {}}, action) {
+export function searchVideoBar(state = {state: null, errorMsg: null, url: '', info: {}}, action) {
     switch (action.type) {
         case SET_SEARCH_URL:
             return Object.assign({}, state, {url: action.url});
         case INVALID_SEARCH:
-            return Object.assign({}, state, {state: SearchStates.ERROR});
+            if(action.errorMsg === null)
+                return Object.assign({}, state, {state: null}, {errorMsg: null});
+            return Object.assign({}, state, {state: SearchStates.ERROR}, {errorMsg: action.errorMsg});
         case REQUEST_VIDEO_INFO:
         case RECEIVE_VIDEO_INFO:
             return videoRequests(state, action.type, action.info);
@@ -30,7 +32,7 @@ function videoRequests(state, type, info) {
                 didInvalidate: false,
             };
 
-            return Object.assign({}, state, {info: video}, {state: SearchStates.FOUND});
+            return Object.assign({}, state, {info: video}, {state: SearchStates.FOUND}, {errorMsg: null});
         default:
             return state;
     }

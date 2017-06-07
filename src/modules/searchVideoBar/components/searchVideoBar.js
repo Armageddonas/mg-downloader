@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Input, Icon, Button} from 'semantic-ui-react'
+import {Input, Icon, Button, Message} from 'semantic-ui-react'
 const {clipboard} = require('electron');
 
 export default class SearchVideoBar extends Component {
@@ -12,13 +12,13 @@ export default class SearchVideoBar extends Component {
     handleUrlSearch(url) {
         // Get url from input
         let videoUrl = url;
-        if(this.props.search.state === this.props.SearchStates.SEARCHING) return;
+        if (this.props.search.state === this.props.SearchStates.SEARCHING) return;
 
         this.props.handleInputUrl(videoUrl);
         this.props.requestVideoInfo(videoUrl);
     };
 
-    pasteFromKeyboard(){
+    pasteFromKeyboard() {
         this.handleUrlSearch(clipboard.readText());
     }
 
@@ -27,6 +27,7 @@ export default class SearchVideoBar extends Component {
         let searchUrl = this.props.search.url || '';
         let searchState = this.props.search.state;
         let StateList = this.props.SearchStates;
+        let errorMsg = this.props.errorMsg;
 
         let searchIcon = null;
         let searching = false;
@@ -45,14 +46,22 @@ export default class SearchVideoBar extends Component {
         }
 
         return (
-            <Input icon={searchIcon}
-                   iconPosition='left'
-                   loading={searching}
-                   placeholder="Enter youtube url"
-                   onChange={(e)=>{handleSearch(e.target.value)}}
-                   value={searchUrl}
-                   action={<Button type='submit' color="blue" disabled={searching} onClick={this.pasteFromKeyboard}>Paste</Button>}
-                   fluid type="text"/>
+            <div>
+                <Input icon={searchIcon}
+                       iconPosition='left'
+                       loading={searching}
+                       placeholder="Enter youtube url"
+                       onChange={(e) => {
+                           handleSearch(e.target.value)
+                       }}
+                       value={searchUrl}
+                       action={<Button type='submit' color="blue" disabled={searching} onClick={this.pasteFromKeyboard}>Paste</Button>}
+                       fluid type="text"/>
+                <Message negative attached='bottom'
+                         style={{visibility: searchState === StateList.ERROR ? null : 'hidden'}}>
+                    <p>{errorMsg !== null ? errorMsg : 'Invisible'}</p>
+                </Message>
+            </div>
         );
     }
 }

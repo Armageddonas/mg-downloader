@@ -7,7 +7,7 @@ import searchVideoBarComp from './components/searchVideoBar'
 
 const mapStateToProps = (state) => {
     const {searchVideoBar} = state;
-    return {search: {url: searchVideoBar.url, state: searchVideoBar.state}, SearchStates};
+    return {search: {url: searchVideoBar.url, state: searchVideoBar.state}, errorMsg: searchVideoBar.errorMsg, SearchStates};
 };
 
 const mapDispatchToProps = (dispatch) => {
