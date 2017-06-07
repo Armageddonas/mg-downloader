@@ -10,11 +10,17 @@ import ProgressBar from "./progressBar";
 
 const fs = require('fs');
 
+const DownloadState = {
+    INITIAL: 'INITIAL',
+    DOWNLOADING: 'DOWNLOADING',
+    FINISHED: 'FINISHED',
+};
+
 export default class InfoItem extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {percent: 0, filename: this.props.video.title, path: null, downloadPressed: false};
+        this.state = {percent: 0, filename: this.props.video.title, path: null, downloadState: DownloadState.INITIAL};
 
         this.handleVideoDownload = this.handleVideoDownload.bind(this);
         this.onMp3Completion = this.onMp3Completion.bind(this);
@@ -27,7 +33,7 @@ export default class InfoItem extends Component {
         // Disable download if folder doesn't exists
         console.log('run download...');
 
-        this.setState({downloadPressed: true});
+        this.setState({downloadState: DownloadState.DOWNLOADING});
         // Get paths
         let path = this.state.path || this.props.downloadPath;
         this.tempFilepath = path + '/' + this.state.filename.replace(/[!@#$%^&*\/\\]/g, '') + '.temp';
@@ -39,7 +45,7 @@ export default class InfoItem extends Component {
     }
 
     onMp3Completion() {
-        this.setState({percent: 100});
+        this.setState({percent: 100, downloadState: DownloadState.FINISHED});
         fs.unlink(this.tempFilepath, (error) => {
             if (error) console.log(error);
         });
@@ -59,26 +65,29 @@ export default class InfoItem extends Component {
 
     render() {
         const {video, handleRemoveVideo, downloadPath} = this.props;
-        const {filename, percent, path, downloadPressed} = this.state
+        const {filename, percent, path, downloadState} = this.state;
+        const {DOWNLOADING, INITIAL, FINISHED} = DownloadState;
 
         return (
             <List.Item style={{textAlign: 'left'}}>
                 <List.Content floated='right'>
                     {
-                        percent < 100 ?
-                            <DownloadIcon handleVideoDownload={this.handleVideoDownload}/>
+                        downloadState !== FINISHED?
+                            <DownloadIcon handleVideoDownload={this.handleVideoDownload}
+                                          disabled={downloadState !== INITIAL}/>
                             :
                             <FolderIcon filepath={this.audioFilepath}/>
                     }
                 </List.Content>
                 <List.Content floated='right'>
-                    <RemoveIcon handleVideoRemove={() => handleRemoveVideo(video.id)}/>
+                    <RemoveIcon handleVideoRemove={() => handleRemoveVideo(video.id)}
+                                disabled={downloadState === DOWNLOADING}/>
                 </List.Content>
                 <List.Content floated='right'>
                     <ItemSettings filename={filename} handleFilename={this.handleFilename}
                                   onPathChange={this.onPathChange}
                                   directory={path || downloadPath}
-                                  disabled={downloadPressed}/>
+                                  disabled={downloadState !== INITIAL}/>
                 </List.Content>
                 <Image avatar src={video.thumbnail}/>
                 <List.Content>
