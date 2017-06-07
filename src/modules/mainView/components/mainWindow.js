@@ -60,6 +60,7 @@ class MainWindow extends Component {
                                     </Grid.Row>
                                 </Grid>
                                 <br/>
+                                <br/>
                                 <DisplayContent/>
                             </Grid.Column>
                         </Grid>

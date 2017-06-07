@@ -7,8 +7,6 @@ const DisplayContent = () => {
     return (
         <div>
             <SearchVideoBar/>
-            <br/>
-            <br/>
             <InfoList/>
         </div>
     );
