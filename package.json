@@ -1,6 +1,6 @@
 {
-  "name": "mg-downloader",
-  "productName": "mg-downloader",
+  "name": "MeGa_Downloader",
+  "productName": "MeGa Downloader",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": "src/index.js",
@@ -26,9 +26,11 @@
         ]
       },
       "electronPackagerConfig": {
+        "icon": "public/download.ico",
         "version-string": {
-          "ProductName": "MG Downloader",
-          "CompanyName": "mgd"
+          "ProductName": "MeGa Downloader",
+          "CompanyName": "mgd",
+          "FileDescription": "A simple mp3 converter"
         }
       },
       "electronWinstallerConfig": {
