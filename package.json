@@ -58,7 +58,6 @@
     "redux-thunk": "^2.2.0",
     "semantic-ui-css": "^2.2.10",
     "semantic-ui-react": "^0.68.3",
-    "unzip": "^0.1.11",
     "youtube-dl": "^1.11.1"
   },
   "devDependencies": {
