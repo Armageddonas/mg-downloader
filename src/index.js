@@ -1,6 +1,5 @@
 import {app, BrowserWindow} from 'electron';
 import environment from '../environment'
-import {extractFfmpegZip} from './tools/videoTools/initialize'
 
 // if (require('electron-squirrel-startup')) return;
 
@@ -9,8 +8,6 @@ import {extractFfmpegZip} from './tools/videoTools/initialize'
 //     // squirrel event handled and app will exit in 1000ms, so don't do anything else
 //     return;
 // }
-
-extractFfmpegZip();
 
 handleSquirrelEvent();
 
