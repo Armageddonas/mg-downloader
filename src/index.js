@@ -82,7 +82,7 @@ let mainWindow;
 
 const createWindow = () => {
     // Create the browser window.
-    let mainWindow = new BrowserWindow({show: false, titleBarStyle: 'hidden'});
+    let mainWindow = new BrowserWindow({show: false, frame: false});
     mainWindow.once('ready-to-show', () => {
         mainWindow.show();
     });

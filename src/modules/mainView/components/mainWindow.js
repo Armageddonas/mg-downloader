@@ -4,6 +4,7 @@ import {Sidebar, Segment, Grid, Menu, Header, Icon, Message} from 'semantic-ui-r
 import DisplayContent from './mainContent'
 import NavContent from '../containers/navContent'
 import fileManager from '../../../tools/fileManager/fileManager'
+import TitleBar from './titlebar';
 
 class MainWindow extends Component {
     constructor(props) {
@@ -24,50 +25,53 @@ class MainWindow extends Component {
         const {visible} = this.state;
 
         return (
-            <Sidebar.Pushable as={Segment}>
-                <Sidebar
-                    as={Menu}
-                    animation='overlay'
-                    width='wide'
-                    direction='right'
-                    visible={visible}
-                    icon='labeled'
-                    vertical
-                    inverted
-                >
-                    <Menu.Item name='path'>
-                        <NavContent/>
-                    </Menu.Item>
-                    <Menu.Item name='back'>
-                        <Icon onClick={this.toggleVisibility} link name='left arrow'/>
-                        Back
-                    </Menu.Item>
-                </Sidebar>
-                <Sidebar.Pusher>
-                    <Segment basic>
+            <span>
+                <TitleBar/>
+                <Sidebar.Pushable style={{margin:0, border:0}} as={Segment}>
+                    <Sidebar
+                        as={Menu}
+                        animation='overlay'
+                        width='wide'
+                        direction='right'
+                        visible={visible}
+                        icon='labeled'
+                        vertical
+                        inverted
+                    >
+                        <Menu.Item name='path'>
+                            <NavContent/>
+                        </Menu.Item>
+                        <Menu.Item name='back'>
+                            <Icon onClick={this.toggleVisibility} link name='left arrow'/>
+                            Back
+                        </Menu.Item>
+                    </Sidebar>
+                    <Sidebar.Pusher>
+                        <Segment basic>
 
-                        <Grid centered>
-                            <Grid.Column mobile={16} tablet={14} computer={12}>
-                                <br/>
-                                <Grid columns='equal'>
-                                    <Grid.Row>
-                                        <Grid.Column textAlign="center">
-                                            <Header as="h1">MeGa Downloader</Header>
-                                        </Grid.Column>
-                                        <Grid.Column mobile={2} tablet={1} computer={1}>
-                                            <Icon name="settings" size="large" onClick={this.toggleVisibility}/>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                                <br/>
-                                <br/>
-                                <DisplayContent/>
-                            </Grid.Column>
-                        </Grid>
+                            <Grid centered>
+                                <Grid.Column mobile={16} tablet={14} computer={12}>
+                                    <br/>
+                                    <Grid columns='equal'>
+                                        <Grid.Row>
+                                            <Grid.Column textAlign="center">
+                                                <Header as="h1">MeGa Downloader</Header>
+                                            </Grid.Column>
+                                            <Grid.Column mobile={2} tablet={1} computer={1}>
+                                                <Icon name="settings" size="large" onClick={this.toggleVisibility}/>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                    <br/>
+                                    <br/>
+                                    <DisplayContent/>
+                                </Grid.Column>
+                            </Grid>
 
-                    </Segment>
-                </Sidebar.Pusher>
-            </Sidebar.Pushable>
+                        </Segment>
+                    </Sidebar.Pusher>
+                </Sidebar.Pushable>
+            </span>
         );
     }
 }
