@@ -3,7 +3,7 @@ import {Progress} from 'semantic-ui-react'
 
 const ProgressBar = ({percent}) => {
     return (
-        <Progress progress color={percent === 100 ? 'green' : 'blue'}
+        <Progress progress
                   percent={percent}
                   indicating={(percent !== 0) && (percent !== 100)}/>
     );

@@ -50,7 +50,7 @@ export default class SearchVideoBar extends Component {
                 <Input icon={searchIcon}
                        iconPosition='left'
                        loading={searching}
-                       placeholder="Enter youtube url"
+                       placeholder="Enter url"
                        onChange={(e) => {
                            handleSearch(e.target.value)
                        }}
