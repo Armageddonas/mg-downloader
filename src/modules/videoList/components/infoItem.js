@@ -31,11 +31,10 @@ export default class InfoItem extends Component {
     }
 
     handleVideoDownload() {
-        // Disable download if folder doesn't exists
         console.log('run download...');
         // Get path
         let path = this.state.path || this.props.downloadPath;
-        // Check if path exists
+        // Disable download if folder doesn't exists
         if(!fs.existsSync(path)){
             this.refs['errorModal'].open();
             return;
