@@ -3,6 +3,7 @@
 
 ### UI helpers
 [electron-basic-ui-layout](https://github.com/tstringer/electron-basic-ui-layout)
+[learnlayout](http://learnlayout.com/)
 
 ### Compile ffmpeg
 [Audio only configuration](https://stackoverflow.com/questions/24849129/compile-ffmpeg-without-most-codecs)
