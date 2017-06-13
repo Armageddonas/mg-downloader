@@ -34,9 +34,11 @@
         }
       },
       "electronWinstallerConfig": {
-        "name": "mg_downloader"
+        "name": "MeGa-downloader"
       },
-      "electronInstallerDebian": {},
+      "electronInstallerDebian": {
+        "name": "MeGa-downloader"
+      },
       "electronInstallerRedhat": {},
       "github_repository": {
         "owner": ""

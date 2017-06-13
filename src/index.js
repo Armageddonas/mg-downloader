@@ -82,7 +82,7 @@ let mainWindow;
 
 const createWindow = () => {
     // Create the browser window.
-    let mainWindow = new BrowserWindow({show: false, frame: false});
+    let mainWindow = new BrowserWindow({backgroundColor: '#2185D0', frame: false});
     mainWindow.once('ready-to-show', () => {
         mainWindow.show();
     });
