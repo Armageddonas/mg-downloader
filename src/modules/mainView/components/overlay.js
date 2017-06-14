@@ -16,7 +16,7 @@ export default class Overlay extends Component {
     constructor(props) {
         super(props);
         const keyframesStyle = `
-             @keyframes slideUp {
+             @keyframes FadeOut {
                  0% {
                   opacity:100;
                  }
@@ -53,7 +53,7 @@ let styles = {
         zIndex: '2',
         cursor: 'pointer',
 
-        animation: 'slideUp 0.3s ease-out',
+        animation: 'FadeOut 0.15s ease-out',
         animationFillMode: 'forwards'
     }
 };
