@@ -5,6 +5,7 @@ import DisplayContent from './mainContent'
 import NavContent from '../containers/navContent'
 import fileManager from '../../../tools/fileManager/fileManager'
 import TitleBar from './titlebar';
+import Overlay from './overlay';
 
 class MainWindow extends Component {
     constructor(props) {
@@ -27,6 +28,7 @@ class MainWindow extends Component {
         return (
             <span>
                 <TitleBar/>
+                <Overlay/>
                 <Sidebar.Pushable style={{margin:0, border:0}} as={Segment}>
                     <Sidebar
                         as={Menu}
