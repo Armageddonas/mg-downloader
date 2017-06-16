@@ -43,13 +43,12 @@ class videoTools {
                 onGetPercentage(percent);
             }
         });
+
+        return videoDl;
     }
 
     // todo: rename to initConvertToMp3
     static convertToMp3(videoFilename, audioFilename, onGetPercentage, onCompletion) {
-
-        // Functions is used as a callback
-        return function () {
             // Load video file
             let proc = FfmpegCommand(videoFilename);
 
@@ -68,7 +67,6 @@ class videoTools {
                         onCompletion();
                     }
                 );
-        }
     }
 
     static getInfo(videoUrl, onInfoFound, onError) {
