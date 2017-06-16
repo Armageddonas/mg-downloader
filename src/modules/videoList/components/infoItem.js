@@ -56,6 +56,7 @@ export default class InfoItem extends Component {
 
     onDownloadComplete() {
         const {DOWNLOADING, ABORTED, CONVERTING} = DownloadState;
+        let path = this.state.path || this.props.downloadPath;
         this.audioFilepath = path + '/' + this.state.filename.replace(/[!@#$%^&*\/\\]/g, '') + '.mp3';
 
         if (this.state.downloadState === DOWNLOADING) {
@@ -75,7 +76,9 @@ export default class InfoItem extends Component {
     }
 
     onGetPercentage(percentage) {
-        if (this.state.downloadState !== DownloadState.DOWNLOADING) return;
+        const {DOWNLOADING, CONVERTING} = DownloadState;
+        const {downloadState} = this.state;
+        if (downloadState !== DOWNLOADING && downloadState !== CONVERTING) return;
 
         this.setState({percent: percentage.toFixed(0)});
     }
@@ -112,7 +115,7 @@ export default class InfoItem extends Component {
     render() {
         const {video, downloadPath} = this.props;
         const {filename, percent, path, downloadState} = this.state;
-        const {DOWNLOADING, INITIAL, FINISHED} = DownloadState;
+        const {DOWNLOADING, INITIAL, FINISHED, CONVERTING} = DownloadState;
 
         let icon = null;
         switch (downloadState) {
@@ -134,7 +137,8 @@ export default class InfoItem extends Component {
                     {icon}
                 </List.Content>
                 <List.Content floated='right'>
-                    <RemoveIcon handleVideoRemove={this.handleRemoveVideo} disabled={downloadState === DOWNLOADING && percent == 0}/>
+                    <RemoveIcon handleVideoRemove={this.handleRemoveVideo}
+                                disabled={(downloadState === DOWNLOADING && percent == 0) || downloadState === CONVERTING}/>
                 </List.Content>
                 <List.Content floated='right'>
                     <ItemSettings filename={filename} handleFilename={this.handleFilename}
