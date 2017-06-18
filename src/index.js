@@ -1,5 +1,6 @@
 import {app, BrowserWindow} from 'electron';
 import environment from '../environment'
+import updater from '../src/tools/updater'
 
 // if (require('electron-squirrel-startup')) return;
 
@@ -27,17 +28,18 @@ function handleSquirrelEvent() {
     const exeName = path.basename(process.execPath);
     console.log(path.resolve('./'));
 
-    const spawn = function(command, args) {
+    const spawn = function (command, args) {
         let spawnedProcess, error;
 
         try {
             spawnedProcess = ChildProcess.spawn(command, args, {detached: true});
-        } catch (error) {}
+        } catch (error) {
+        }
 
         return spawnedProcess;
     };
 
-    const spawnUpdate = function(args) {
+    const spawnUpdate = function (args) {
         return spawn(updateDotExe, args);
     };
 
@@ -91,7 +93,7 @@ const createWindow = () => {
     mainWindow.loadURL(`file://${__dirname}/index.html`);
 
     // Open the DevTools..
-    if(environment.debug === true) mainWindow.webContents.openDevTools();
+    if (environment.debug === true) mainWindow.webContents.openDevTools();
     // Emitted when the window is closed.
     mainWindow.on('closed', () => {
         // Dereference the window object, usually you would store windows
@@ -104,7 +106,8 @@ const createWindow = () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+// todo: Display update message to user
+app.on('ready', () => updater(createWindow));
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {

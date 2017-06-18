@@ -1,6 +1,6 @@
 {
-  "name": "MeGa_Downloader",
-  "productName": "MeGa Downloader",
+  "name": "mega-downloader",
+  "productName": "mega-downloader",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": "src/index.js",
@@ -38,7 +38,8 @@
         "name": "MeGa-downloader"
       },
       "electronInstallerDebian": {
-        "name": "MeGa-downloader"
+        "name": "mega-downloader",
+        "ProductName": "mega-downloader"
       },
       "electronInstallerRedhat": {},
       "github_repository": {
@@ -46,7 +47,7 @@
       },
       "windowsStoreConfig": {
         "packageName": "",
-        "name": "mgdownloader"
+        "name": "mega-downloader"
       }
     }
   },

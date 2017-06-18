@@ -6,7 +6,6 @@ import NavContent from '../containers/navContent'
 import fileManager from '../../../tools/fileManager/fileManager'
 import TitleBar from './titlebar';
 import Overlay from './overlay';
-import YtdlUpdater from './ytdlUpdater';
 
 class MainWindow extends Component {
     constructor(props) {
@@ -59,9 +58,6 @@ class MainWindow extends Component {
                                         <Grid.Row>
                                             <Grid.Column textAlign="center">
                                                 <Header as="h1">MeGa Downloader</Header>
-                                            </Grid.Column>
-                                            <Grid.Column mobile={1} tablet={1} computer={1}>
-                                                <YtdlUpdater name="settings" size="large" onClick={this.toggleVisibility}/>
                                             </Grid.Column>
                                             <Grid.Column mobile={1} tablet={1} computer={1}>
                                                 <Icon name="settings" size="large" onClick={this.toggleVisibility}/>
