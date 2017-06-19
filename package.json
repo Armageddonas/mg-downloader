@@ -5,12 +5,14 @@
   "description": "My Electron application description",
   "main": "src/index.js",
   "scripts": {
-    "start": "node scripts/setEnv.js debug && electron-forge start",
-    "prod": "node scripts/setEnv.js production && electron-forge start",
-    "postInstallLinux": "sudo chmod 755 ./node_modules/youtube-dl/bin/youtube-dl && sudo chmod 755 ./node_modules/youtube-dl/lib/downloader.js",
+    "start": "npm run setEnv debug && electron-forge start",
+    "prod": "npm run setEnv production && electron-forge start",
+    "postinstall": "npm run patchYtdl",
     "package": "electron-forge package",
+    "make": "npm run ytdlPermissions && npm run setEnv production && electron-forge make",
     "setEnv": "node scripts/setEnv.js",
-    "make": "node scripts/setEnv.js production && electron-forge make",
+    "ytdlPermissions": "node scripts/setup/linux/ytdl-permissions.js",
+    "patchYtdl": "node scripts/setup/fixYtdl/index.js",
     "lint": "eslint src"
   },
   "keywords": [],
