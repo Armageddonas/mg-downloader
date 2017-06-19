@@ -1,10 +1,11 @@
 let request = require('request');
 let fs = require('fs');
-var path = require('path');
+let mv = require('mv');
+let path = require('path');
 
 let regexp = /https:\/\/yt-dl\.org\/downloads\/(\d{4}\.\d\d\.\d\d(\.\d)?)\/youtube-dl/;
-var url = 'https://rg3.github.io/youtube-dl/download.html';
-var isWin = (process.platform === 'win32' || process.env.NODE_PLATFORM === 'windows') ? true : false;
+let url = 'https://rg3.github.io/youtube-dl/download.html';
+let isWin = (process.platform === 'win32' || process.env.NODE_PLATFORM === 'windows') ? true : false;
 
 const getLatestVersionInfo = (callback) => {
     request.get(url, function get(err, res, body) {
@@ -19,7 +20,7 @@ const getLatestVersionInfo = (callback) => {
             return callback(new Error('Could not find download link in ' + url));
         }
         // todo: set 3rd value of array to infoJSON
-        let infoJSON = {url: info[0], version: info[1]};
+        let infoJSON = {url: exec(info[0]), version: info[1]};
 
         callback(null, infoJSON);
     })
@@ -35,7 +36,7 @@ function download(link, callback) {
             status = new Error('Response Error: ' + res.statusCode);
             return;
         }
-        downloadFile.pipe(fs.createWriteStream(path.join(__dirname, 'youtube-dl'), {mode: 493}));
+        downloadFile.pipe(fs.createWriteStream(path.join(__dirname, exec('youtube-dl')), {mode: 493}));
     });
 
     downloadFile.on('error', function error(err) {
@@ -76,26 +77,19 @@ const getBinary = (callback) => {
 // getBinary((err, msg) => console.log(msg));
 
 const copyToYtdlModule = (callback) => {
-    if (!fs.existsSync(__dirname + '/youtube-dl') && !fs.existsSync(__dirname + '/youtube-dl')) return callback();
+    if (!fs.existsSync(__dirname + exec('/youtube-dl')) && !fs.existsSync(__dirname + '/details')) return callback();
 
-    let ytdlPath = __dirname + '/../../../node_modules/youtube-dl/bin/youtube-dl';
+    let ytdlPath = __dirname + '/../../../node_modules/youtube-dl/bin/' + exec('youtube-dl');
     let detailsPath = __dirname + '/../../../node_modules/youtube-dl/bin/details';
 
-    fs.createReadStream(__dirname + '/youtube-dl').pipe(fs.createWriteStream(ytdlPath));
-    fs.createReadStream(__dirname + '/details').pipe(fs.createWriteStream(detailsPath));
-
-    fs.unlink(__dirname + '/youtube-dl', (err) => {
-        if (err) console.log(err)
-    });
-    fs.unlink(__dirname + '/details', (err) => {
-        if (err) console.log(err)
-    });
+    fs.renameSync(path.join(__dirname, exec('youtube-dl')), ytdlPath);
+    fs.renameSync(path.join(__dirname, '/details'), detailsPath);
 
     callback();
 };
 
 const getCurrentVersion = (callback) => {
-    fs.readFile(__dirname + '/../../../node_modules/youtube-dl/bin/details', 'utf8', (err, data) => {
+    fs.readFile(path.join(__dirname, '../../../node_modules/youtube-dl/bin/details'), 'utf8', (err, data) => {
         if (err) callback(err);
         callback(null, JSON.parse(data));
     });
