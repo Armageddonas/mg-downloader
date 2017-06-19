@@ -1,6 +1,5 @@
 let request = require('request');
 let fs = require('fs');
-let mv = require('mv');
 let path = require('path');
 
 let regexp = /https:\/\/yt-dl\.org\/downloads\/(\d{4}\.\d\d\.\d\d(\.\d)?)\/youtube-dl/;
