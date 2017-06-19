@@ -102,12 +102,16 @@ export default class InfoItem extends Component {
 
     handleRemoveVideo() {
         const {video, handleRemoveVideo} = this.props;
+        const {downloadState} = this.state;
+        const {DOWNLOADING, REMOVED} = DownloadState;
 
-        this.video._source.stream.abort();
-        fs.unlink(this.tempFilepath, (error) => {
-            if (error) console.log(error);
-        });
-        this.setState({downloadState: DownloadState.REMOVED}, () => {
+        if (downloadState === DOWNLOADING) {
+            this.video._source.stream.abort();
+            fs.unlink(this.tempFilepath, (error) => {
+                if (error) console.log(error);
+            });
+        }
+        this.setState({downloadState: REMOVED}, () => {
             handleRemoveVideo(video.id);
         });
     }
