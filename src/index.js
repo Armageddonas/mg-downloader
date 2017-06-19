@@ -1,5 +1,6 @@
 import {app, BrowserWindow} from 'electron';
 import environment from '../environment'
+import {copyToYtdlModule as updateYtdlModule} from './tools/updater'
 
 // if (require('electron-squirrel-startup')) return;
 
@@ -106,7 +107,7 @@ const createWindow = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 // todo: Display update message to user
-app.on('ready', createWindow);
+app.on('ready', () => updateYtdlModule(createWindow));
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {

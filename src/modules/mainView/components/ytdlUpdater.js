@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Label, Popup} from "semantic-ui-react";
 import environment from '../../../../environment'
-let downloader = require('../../../../node_modules/youtube-dl/lib/downloader');
+import {update} from '../../../tools/updater'
 let os = require('os');
 
 export default class YtdlUpdater extends Component {
@@ -14,8 +14,7 @@ export default class YtdlUpdater extends Component {
         if (environment.debug === false && os.platform() === 'linux') return;
 
         const updateState = () => this.setState({visible: true});
-        downloader(function error(err, done) {
-            'use strict';
+        update(function error(err, done) {
             if (err) {
                 return console.log(err.stack);
             }
