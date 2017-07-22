@@ -14,7 +14,7 @@ class videoTools {
         let videoDl = youtubedl(
             videoUrl,
             ['--format=bestaudio'],
-            {cwd: ''}
+            {cwd: '', maxBuffer: Infinity}
         );
 
         // Get video size
@@ -72,7 +72,7 @@ class videoTools {
     static getInfo(videoUrl, onInfoFound, onError) {
         // Get video info
         console.log('Fetching video info');
-        youtubedl.getInfo(videoUrl, [], {}, function (err, info) {
+        youtubedl.getInfo(videoUrl, [], {maxBuffer: Infinity}, function (err, info) {
             if (err) {
                 onError(videoUrl);
                 throw err;
