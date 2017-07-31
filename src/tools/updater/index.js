@@ -73,7 +73,6 @@ const getBinary = (callback) => {
         }
     )
 };
-// getBinary((err, msg) => console.log(msg));
 
 const copyToYtdlModule = (callback) => {
     if (!fs.existsSync(__dirname + exec('/youtube-dl')) && !fs.existsSync(__dirname + '/details')) return callback();
@@ -84,6 +83,7 @@ const copyToYtdlModule = (callback) => {
     fs.renameSync(path.join(__dirname, exec('youtube-dl')), ytdlPath);
     fs.renameSync(path.join(__dirname, '/details'), detailsPath);
 
+    console.log('Updated ytdl to latest version');
     callback();
 };
 
@@ -107,5 +107,6 @@ const update = (callback) => {
 export {getLatestVersionInfo};
 export {getCurrentVersion};
 export {getBinary};
+
 export {copyToYtdlModule};
 export {update};
